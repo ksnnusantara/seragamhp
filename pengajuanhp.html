@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cari Data HP – NPK (Read-Only)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 500: '#d4af37', 600: '#b8941f' }
+          },
+          fontFamily: { poppins: ['Poppins', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .badge { @apply px-2 py-1 rounded-full text-xs font-semibold border; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-lg md:text-2xl font-semibold">
+        <span class="text-gold-600"></span>Pencarian Pengajuan Elektronik (NPK)
+      </h1>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Form Cari -->
+    <section class="bg-white rounded-2xl shadow p-4 md:p-6">
+      <form id="formCari" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+        <div>
+          <label class="block text-sm font-medium mb-1">NPK</label>
+          <input id="npkCari" type="text" required placeholder="Masukkan NPK..."
+                 class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-gold-500 outline-none">
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" class="px-4 py-2 rounded-xl bg-gold-500 text-white hover:bg-gold-600">Cari</button>
+          <button type="button" id="btnReset" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Reset</button>
+        </div>
+        <div class="text-sm text-slate-500 md:text-right" id="countRows"></div>
+      </form>
+      <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
+    </section>
+
+    <!-- Hasil -->
+    <section class="bg-white rounded-2xl shadow p-4 md:p-6 mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Hasil Pencarian</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border border-slate-200 rounded-xl overflow-hidden" id="tblData">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-2 py-2 text-left">#</th>
+              <th class="px-2 py-2 text-left">ID</th>
+              <th class="px-2 py-2 text-left">Tanggal</th>
+              <th class="px-2 py-2 text-left">NPK</th>
+              <th class="px-2 py-2 text-left">No. Telp</th>
+              <th class="px-2 py-2 text-left">Cicilan</th>
+              <th class="px-2 py-2 text-left">Tipe HP</th>
+              <th class="px-2 py-2 text-left">Alamat Kirim</th>
+              <th class="px-2 py-2 text-left">Keterangan</th>
+              <th class="px-2 py-2 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
+
+  <!-- Loading -->
+  <div id="loading" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-xl p-4 shadow">
+      <div class="w-6 h-6 border-4 border-slate-200 border-t-gold-500 rounded-full animate-spin mx-auto"></div>
+    </div>
+  </div>
+
+  <script>
+    // ===== KONFIG =====
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyiYRjZPua2w9iKAInp3LCjmP4JUID7xcvCNxt71Y7-K57bjvE-SvoHgEWb1-RBlz9O/exec';
+
+    // ===== Utils =====
+    const $ = sel => document.querySelector(sel);
+    const showLoading = (b) => { $('#loading').style.display = b ? 'flex' : 'none'; };
+    const toast = (msg, ok=true) => {
+      const t = $('#toast'); t.textContent = msg;
+      t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-gold-500 text-white" : "bg-rose-600 text-white");
+      t.style.opacity = 1; t.style.display = 'block';
+      setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 1800);
+    };
+    const esc = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // Phone helpers (selaras dengan Apps Script)
+    function normalizePhoneForWa(val){
+      let d = String(val || '').replace(/\D/g, '');
+      if(!d) return '';
+      if (d.startsWith('0')) d = '62' + d.slice(1);
+      if (!d.startsWith('62') && d.startsWith('8')) d = '62' + d;
+      return d;
+    }
+
+    // ===== Event =====
+    document.getElementById('formCari').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const npk = $('#npkCari').value.trim();
+      if(!npk){ toast('NPK wajib diisi', false); return; }
+      showLoading(true);
+      try{
+        const res = await fetch(`${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`);
+        const json = await res.json();
+        if(json.status !== 'success'){ toast(json.message || 'Gagal ambil data', false); return; }
+        renderTable(json.data || []);
+        $('#infoCari').classList.remove('hidden');
+        $('#infoCari').textContent = `Menampilkan ${json.data?.length || 0} baris untuk NPK: ${npk}`;
+      } catch(err){
+        toast('Error: ' + err.message, false);
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    document.getElementById('btnReset').addEventListener('click', ()=>{
+      $('#npkCari').value = '';
+      $('#tbody').innerHTML = '';
+      $('#countRows').textContent = '';
+      $('#infoCari').classList.add('hidden');
+    });
+
+    // ===== Render =====
+    function renderTable(rows){
+      const tb = $('#tbody');
+      tb.innerHTML = '';
+      $('#countRows').textContent = `${rows.length} baris`;
+
+      if(!rows.length){
+        tb.innerHTML = `<tr><td colspan="10" class="px-3 py-6 text-center text-slate-500">Tidak ada data</td></tr>`;
+        return;
+      }
+
+      rows.forEach((r, i)=>{
+        const digits = r.notelp_link ? String(r.notelp_link).replace(/^https?:\/\/wa\.me\//,'') : normalizePhoneForWa(r.notelp || '');
+        const waUrl = digits ? `https://wa.me/${digits}` : '';
+        const status = String(r.status || '').toUpperCase();
+
+        let statusClass = 'border-slate-300 text-slate-600';
+        if(status === 'OK') statusClass = 'border-emerald-300 text-emerald-700';
+        else if(status === 'VERIFIKASI') statusClass = 'border-amber-300 text-amber-700';
+        else if(status === 'NO ACC') statusClass = 'border-rose-300 text-rose-700';
+        else if(status === 'CANCEL') statusClass = 'border-slate-300 text-slate-600';
+
+        const telDisplay = digits ? (digits.startsWith('62') ? '0' + digits.slice(2) : digits) : '';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="px-2 py-2 text-sm text-slate-600">${i+1}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.id)}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.tanggal)}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.npk)}</td>
+          <td class="px-2 py-2 text-sm">
+            ${waUrl
+              ? `<a href="${waUrl}" target="_blank" rel="noopener" class="text-gold-600 hover:underline">${esc(telDisplay)}</a>`
+              : `<span class="text-slate-400 italic">-</span>`
+            }
+          </td>
+          <td class="px-2 py-2 text-sm">${esc(r.cicilan)}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.tipehp)}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.alamat)}</td>
+          <td class="px-2 py-2 text-sm">${esc(r.keterangan)}</td>
+          <td class="px-2 py-2 text-sm">
+            <span class="badge ${statusClass}">${esc(status || '')}</span>
+          </td>
+        `;
+        tb.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>

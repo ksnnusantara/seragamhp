@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikasi Koperasi Sigap Nusantara</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'primary': '#dcbc4a',        // Warna emas utama
+                        'primary-dark': '#b89d3a',   // Emas gelap untuk hover
+                        'primary-light': '#f0e6c0',  // Emas muda untuk background
+                        'accent': '#e1c789',         // Emas lembut untuk gradien
+                        'koperasi-primary': '#2C3E50', // Abu tua (tetap untuk teks utama)
+                        'koperasi-secondary': '#dcbc4a', // Emas sebagai brand
+                        'white': '#ffffff',
+                        'gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    },
+                    boxShadow: {
+                        'light': '0 4px 12px rgba(219, 188, 74, 0.1)',
+                        'inner-light': 'inset 0 1px 3px rgba(0, 0, 0, 0.1)'
+                    },
+                    animation: {
+                        'float-slow': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f7f4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2C3E50;
+        }
+        /* Background dekoratif emas lembut */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(219, 188, 74, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(225, 199, 137, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        /* Efek kaca (glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(219, 188, 74, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        /* Tombol animasi dengan gradien emas */
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.6s;
+        }
+        .btn-animated:hover::before {
+            left: 100%;
+        }
+        .btn-animated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(219, 188, 74, 0.2);
+        }
+        /* Kartu pilihan utama */
+        .selection-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(219, 188, 74, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(219, 188, 74, 0.1);
+        }
+        .selection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(219, 188, 74, 0.2);
+            border-color: rgba(219, 188, 74, 0.4);
+        }
+        .selection-card .icon-container {
+            background: linear-gradient(135deg, #e1c789, #dcbc4a);
+            transition: all 0.3s ease;
+        }
+        .selection-card:hover .icon-container {
+            background: linear-gradient(135deg, #dcbc4a, #b89d3a);
+            transform: scale(1.1) rotate(-5deg);
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .selection-card {
+                padding: 1.5rem;
+            }
+            .selection-card h3 {
+                font-size: 1.125rem;
+            }
+            .glass-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            .grid-cols-1 {
+                gap: 1rem;
+            }
+            .md\\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            .text-4xl,
+            .text-3xl {
+                font-size: 1.75rem;
+                line-height: 1.2;
+            }
+            .text-2xl {
+                font-size: 1.375rem;
+            }
+            .py-10 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3498DB;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2980B9;
+        }
+        /* Animation for elements */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+<body class="font-poppins">
+    <!-- Main Selection Screen -->
+    <div id="mainSelectionScreen"
+        class="container mx-auto max-w-6xl py-8 px-4 min-h-screen flex flex-col justify-center">
+        <div class="text-center mb-12">
+            <div class="mb-6 animate-float">
+                <div class="inline-block p-4 bg-white rounded-full shadow-large mb-4">
+                    <img src="logoksn.png" alt="Logo Koperasi" class="w-20 h-20 rounded-full">
+                </div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-koperasi-primary mb-6 leading-tight">
+                Aplikasi Koperasi<br>
+                <span class="text-koperasi-secondary">Sigap Nusantara</span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Sistem manajemen terpadu untuk koperasi modern. Silakan pilih aplikasi yang Anda butuhkan.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="selection-card rounded-3xl shadow-large p-8 text-center" onclick="showApplication('hp')"
+                data-aos="fade-right" data-aos-delay="100">
+                <div class="icon-container w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-mobile-alt text-white text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Aplikasi HP</h3>
+                <p class="text-gray-600 mb-8 leading-relaxed">Kelola data HP karyawan dengan mudah dan efisien</p>
+                <button
+                    class="btn-animated btn-gradient text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center mx-auto">
+                    Pilih Aplikasi <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+            <div class="selection-card rounded-3xl shadow-large p-8 text-center" onclick="showApplication('seragam')"
+                data-aos="fade-left" data-aos-delay="200">
+                <div class="icon-container w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-tshirt text-white text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Aplikasi Seragam</h3>
+                <p class="text-gray-600 mb-8 leading-relaxed">Manajemen data seragam karyawan yang terintegrasi</p>
+                <button
+                    class="btn-animated btn-gradient text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center mx-auto">
+                    Pilih Aplikasi <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50
+            });
+        });
+        
+        // Main navigation functions
+        function showApplication(appType) {
+            if (appType === 'hp') {
+                window.location.href = 'aplikasi_hp.html';
+            } else if (appType === 'seragam') {
+                window.location.href = 'aplikasi_seragam.html';
+            }
+        }
+    </script>
+</body>
+</html>

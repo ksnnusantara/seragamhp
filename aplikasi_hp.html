@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikasi HP - Koperasi Sigap Nusantara</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'gold': {
+                            50: '#fffef0',
+                            100: '#fef9e7',
+                            200: '#f9e79f',
+                            300: '#f4d03f',
+                            400: '#f1c40f',
+                            500: '#d4af37', // Warna emas utama
+                            600: '#b8941f', // Emas gelap
+                            700: '#917712',
+                            800: '#745c0a',
+                            900: '#5a4608',
+                        },
+                        'primary': '#d4af37',        // Warna emas utama
+                        'primary-dark': '#b8941f',   // Emas gelap untuk hover
+                        'primary-light': '#f9e79f',  // Emas muda untuk background
+                        'accent': '#f4d03f',         // Emas lembut untuk gradien
+                        'koperasi-primary': '#2C3E50', // Abu tua (tetap untuk teks utama)
+                        'koperasi-secondary': '#d4af37', // Emas sebagai brand
+                        'white': '#ffffff',
+                        'gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    },
+                    boxShadow: {
+                        'light': '0 4px 12px rgba(212, 175, 55, 0.1)',
+                        'inner-light': 'inset 0 1px 3px rgba(0, 0, 0, 0.1)'
+                    },
+                    animation: {
+                        'float-slow': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #fffef0 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2C3E50;
+        }
+        /* Background dekoratif emas lembut */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        /* Efek kaca (glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        /* Tombol animasi dengan gradien emas */
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: white;
+        }
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.6s;
+        }
+        .btn-animated:hover::before {
+            left: 100%;
+        }
+        .btn-animated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        /* Kartu pilihan utama */
+        .selection-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+        .selection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        .selection-card .icon-container {
+            background: linear-gradient(135deg, #f4d03f, #d4af37);
+            transition: all 0.3s ease;
+        }
+        .selection-card:hover .icon-container {
+            background: linear-gradient(135deg, '#d4af37', '#b8941f');
+            transform: scale(1.1) rotate(-5deg);
+        }
+        /* Custom Select Styling */
+        .hp-select-container {
+            position: relative;
+            max-width: 100%;
+        }
+        .select2-container {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 52px !important;
+            border: 2px solid #E5E7EB !important;
+            border-radius: 12px !important;
+            padding: 0 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            background: linear-gradient(135deg, #ffffff 0%, '#fefefe' 100%) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .select2-container--default .select2-selection--single:hover {
+            border-color: '#d4af37' !important;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            transform: translateY(-1px);
+        }
+        .select2-container--default.select2-container--focus .select2-selection--single,
+        .select2-container--default .select2-selection--single:focus {
+            border-color: '#d4af37' !important;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15), 0 4px 12px rgba(212, 175, 55, 0.1) !important;
+            outline: none !important;
+            transform: translateY(-1px);
+        }
+        /* Notification styles */
+        .notification-show {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Data table styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            overflow-x: auto;
+            display: block;
+            white-space: nowrap;
+        }
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: left;
+            background: white;
+        }
+        .data-table th {
+            background: linear-gradient(135deg, '#f4d03f', '#d4af37');
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: '#fffef0';
+        }
+        .data-table tr:hover {
+            background-color: '#f9e79f';
+        }
+        /* Input improvements */
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid #E5E7EB;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+        .form-input:focus {
+            border-color: '#d4af37';
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        .error-input {
+            border-color: '#EF4444' !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+        .error-message {
+            color: '#EF4444';
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid transparent;
+        }
+        .status-verification {
+            background: linear-gradient(135deg, '#fef9e7', '#f9e79f');
+            color: '#7d6608';
+            border-color: '#d4af37';
+        }
+        .status-ok {
+            background: linear-gradient(135deg, '#eafaf1', '#d5f4e6');
+            color: '#0e6655';
+            border-color: '#27ae60';
+        }
+        .status-no-acc {
+            background: linear-gradient(135deg, '#fdedec', '#fadbd8');
+            color: '#922b21';
+            border-color: '#e74c3c';
+        }
+        .status-cancel {
+            background: linear-gradient(135deg, '#f8f9fa', '#e9ecef');
+            color: '#495057';
+            border-color: '#adb5bd';
+        }
+        /* Loading overlay */
+        .loading-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .loading-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        /* Button improvements */
+        .btn-gradient {
+            background: linear-gradient(135deg, '#f4d03f', '#d4af37');
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, '#d4af37', '#b8941f');
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+        .btn-gradient:active {
+            transform: translateY(0);
+        }
+        /* Koperasi theme colors */
+        .bg-koperasi-primary {
+            background-color: '#2C3E50';
+        }
+        .bg-koperasi-secondary {
+            background-color: '#d4af37';
+        }
+        .text-koperasi-primary {
+            color: '#2C3E50';
+        }
+        .text-koperasi-secondary {
+            color: '#d4af37';
+        }
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #outputSection,
+            #outputSection * {
+                visibility: visible;
+            }
+            #outputSection {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .selection-card {
+                padding: 1.5rem;
+            }
+            .selection-card h3 {
+                font-size: 1.125rem;
+            }
+            .glass-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            .grid-cols-1 {
+                gap: 1rem;
+            }
+            .md\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            .text-4xl,
+            .text-3xl {
+                font-size: 1.75rem;
+                line-height: 1.2;
+            }
+            .text-2xl {
+                font-size: 1.375rem;
+            }
+            .py-10 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: '#f1f1f1';
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: '#d4af37';
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: '#b8941f';
+        }
+        /* Animation for elements */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        /* Section visibility */
+        .section-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-poppins">
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 loading-overlay flex items-center justify-center z-50 hidden">
+        <div class="loading-content p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
+            <div
+                class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-koperasi-secondary mx-auto mb-4">
+            </div>
+            <p class="text-lg font-semibold text-gray-800">Memproses...</p>
+            <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
+        </div>
+    </div>
+    <!-- Notification -->
+    <div id="notification"
+        class="fixed bottom-4 right-4 px-6 py-4 rounded-xl shadow-lg transform translate-y-16 transition-all duration-300 z-50 hidden max-w-sm opacity-0">
+        <div class="flex items-center">
+            <i id="notificationIcon" class="fas fa-check-circle mr-3 text-lg"></i>
+            <span id="notificationText" class="font-medium">Pesan notifikasi</span>
+        </div>
+    </div>
+    <!-- Modal untuk Ubah Data HP -->
+    <div id="statusModal"
+        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <div class="glass-card rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-edit text-koperasi-secondary mr-2"></i>
+                    Ubah Data HP
+                </h3>
+                <button onclick="closeStatusModal()"
+                    class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="statusForm" class="space-y-4">
+                <input type="hidden" id="statusId" name="id">
+                <input type="hidden" id="statusRowNumber" name="rowNumber">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">NPK:</label>
+                    <input type="text" id="statusNpk" readonly
+                        class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl font-mono">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">No. Telepon:</label>
+                    <input type="text" id="statusNotelp" readonly
+                        class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Tipe HP:</label>
+                    <input type="text" id="statusTipeHp" 
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Alamat:</label>
+                    <textarea id="statusAlamat" rows="2"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input"></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Keterangan:</label>
+                    <textarea id="statusKeterangan" rows="2"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input"></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Status Baru:</label>
+                    <select name="status" id="newStatus" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input">
+                        <option value="">-- Pilih Status --</option>
+                        <option value="VERIFIKASI">VERIFIKASI</option>
+                        <option value="OK">OK</option>
+                        <option value="NO ACC">NO ACC</option>
+                        <option value="CANCEL">CANCEL</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="closeStatusModal()"
+                        class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition font-medium">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-6 py-3 btn-gradient text-white rounded-xl font-medium">
+                        <i class="fas fa-save mr-2"></i>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- HP Application Screen -->
+    <div id="hpApplication" class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <div class="flex items-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-mobile-alt text-koperasi-secondary text-2xl mr-3"></i>
+                    Aplikasi HP Karyawan
+                </h2>
+            </div>
+            <div class="flex gap-3">
+                <a href="index.html"
+                    class="btn-animated px-6 py-3 rounded-xl font-medium">
+                    <i class="fas fa-home mr-2"></i> Menu Utama
+                </a>
+            </div>
+        </div>
+        
+        <!-- Pilihan Menu -->
+        <div id="menuSelection" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
+            <div onclick="showInputSection()" class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-plus-circle text-white text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Input Data HP</h3>
+                <p class="text-gray-600">Menambahkan data HP karyawan baru ke dalam sistem</p>
+            </div>
+            <div onclick="showSearchSection()" class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-white text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cari Data by NPK</h3>
+                <p class="text-gray-600">Mencari dan melihat data HP karyawan berdasarkan NPK</p>
+            </div>
+        </div>
+        
+        <!-- Input Data Section -->
+        <section id="inputSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-slate-800">Input Data Baru</h2>
+                <button onclick="backToMenu()"
+                    class="btn-animated px-6 py-3 rounded-xl font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            <form id="formInput" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
+                    <input id="inTanggal" type="date" class="w-full border rounded-xl px-3 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
+                    <input id="inNpk" type="text" class="w-full border rounded-xl px-3 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">No. Telp</label>
+                    <input id="inNotelp" type="tel" class="w-full border rounded-xl px-3 py-2" placeholder="08xxxxxxxxxx">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Cicilan</label>
+                    <input id="inCicilan" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Contoh: 12x / 500.000">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Tipe HP</label>
+                    <select id="inTipehp" class="w-full border rounded-xl px-3 py-2"></select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Status</label>
+                    <select id="inStatus" class="w-full border rounded-xl px-3 py-2">
+                        <option value="">- Pilih -</option>
+                        <option>OK</option>
+                        <option>CANCEL</option>
+                        <option>NO ACC</option>
+                        <option>VERIFIKASI</option>
+                    </select>
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Alamat Kirim</label>
+                    <input id="inAlamat" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Alamat lengkap">
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
+                    <textarea id="inKet" rows="2" class="w-full border rounded-xl px-3 py-2" placeholder="Catatan tambahan"></textarea>
+                </div>
+                <div class="md:col-span-3 flex gap-2">
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-gold-500 text-white hover:bg-gold-600">Simpan</button>
+                    <button type="button" onclick="resetForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
+                    <span id="msgInput" class="text-sm text-slate-500"></span>
+                </div>
+            </form>
+        </section>
+        
+        <!-- Cari Data Section -->
+        <section id="searchSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-slate-800">Cari Data by NPK</h2>
+                <button onclick="backToMenu()"
+                    class="btn-animated px-6 py-3 rounded-xl font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            <form id="formCari" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
+                    <input id="npkCari" type="text" class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-gold-500 outline-none" placeholder="Masukkan NPK..." required>
+                </div>
+                <div class="md:col-span-2 flex gap-2">
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-gold-500 text-white hover:bg-gold-600">Cari</button>
+                    <button type="button" id="btnReset" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
+                </div>
+            </form>
+            <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
+        </section>
+        
+        <!-- Tabel Hasil Pencarian -->
+        <section id="resultSection" class="bg-white rounded-2xl shadow p-4 md:p-6 section-hidden">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-xl font-semibold text-slate-800">Hasil Pencarian</h2>
+                <div class="text-sm text-slate-500" id="countRows"></div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-slate-200 rounded-xl overflow-hidden" id="tblData">
+                    <thead class="bg-slate-100 text-slate-700">
+                        <tr>
+                            <th class="px-2 py-1">#</th>
+                            <th class="px-2 py-1">ID</th>
+                            <th class="px-2 py-1">Tanggal</th>
+                            <th class="px-2 py-1">NPK</th>
+                            <th class="px-2 py-1">No. Telp</th>
+                            <th class="px-2 py-1">Cicilan</th>
+                            <th class="px-2 py-1">Tipe HP</th>
+                            <th class="px-2 py-1">Alamat Kirim</th>
+                            <th class="px-2 py-1">Keterangan</th>
+                            <th class="px-2 py-1">Status</th>
+                            <th class="px-2 py-1">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="divide-y"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
+    <script>
+        // ==== ENDPOINT WEB APP MU ====
+        const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyiYRjZPua2w9iKAInp3LCjmP4JUID7xcvCNxt71Y7-K57bjvE-SvoHgEWb1-RBlz9O/exec';
+        // ==== Utils ====
+        const toast = (msg, ok=true) => {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-gold-500 text-white" : "bg-rose-600 text-white");
+            t.style.opacity = 1; t.style.display = 'block';
+            setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 1800);
+        };
+        const esc = s => (s ?? "").toString();
+        // ==== Master pilihan ====
+        const tipeHpOptions = [
+            "", 
+            "VIVO Y29 6/128",
+            "VIVO Y29 8/128",
+            "VIVO Y29 8/256",
+            "Y19S PRO 4/64 GB",
+            "Y19S PRO 4/128 GB",
+            "Y19S PRO 6/128 GB",
+            "REDMI 14C 6/128",
+            "REDMI 14C 8/256",
+            "REDMI NOTE 14 8/128",
+            "REDMI NOTE 14 8/256",
+            "REDMI NOTE 14 8/256 5G",
+            "REDMI NOTE 14 12/512 5G",
+            "REDMI 13 8/128",
+            "REDMI 13 8/256",
+            "REDMI POCO PAD 8/256",
+            "OPPO A60 8/256",
+            "OPPO A3X 6/128",
+            "REALME C75 8/128",
+            "REALME C75 8/256",
+            "REALME NOTE 60 6/128",
+            "SAMSUNG A06 4/64",
+            "SAMSUNG A06 4/128",
+            "SAMSUNG A06 6/128",
+            "SAMSUNG A16 8/128",
+            "SAMSUNG A16 8/256",
+            "SAMSUNG A16 8/256 5G",
+            "SMART 10 4/128 GB",
+            "SMART 10 PLUS 8/128 GB",
+            "HOT 60i 8/256 GB",
+            "HOT 60 PRO 8/256 GB",
+            "INFINIX HOT 50 PRO+ 8/256",
+            "TECNO SPARK GO 1 4/128",
+            "POVA 7 8/128 GB",
+            "POVA 7 8/256 GB",
+            "CAMON 40 8/256 GB",
+            "ADVAN TAB VX LITE 6/128GB",
+            "Lainnya"
+        ];
+        const statusList = ["", "OK", "CANCEL", "NO ACC", "VERIFIKASI"];
+        // ==== Select2 input form ====
+        $(document).ready(function(){
+            $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
+            $('#inTipehp').select2({ 
+                placeholder: "Pilih / ketik tipe HP", 
+                tags: true, 
+                width: '100%',
+                createTag: function (params) {
+                    return {
+                        id: params.term,
+                        text: params.term,
+                        newOption: true
+                    }
+                }
+            });
+            
+            // Set default tanggal ke hari ini
+            document.getElementById('inTanggal').valueAsDate = new Date();
+            
+            // Tambahkan event listener untuk form
+            document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
+            document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
+            document.getElementById('btnReset').addEventListener('click', handleSearchReset);
+        });
+        
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50
+            });
+        });
+        
+        // Main navigation functions
+        function goBack() {
+            // Fungsi untuk kembali ke halaman sebelumnya
+            window.history.back();
+        }
+        
+        function showInputSection() {
+            // Sembunyikan menu utama
+            document.getElementById('menuSelection').classList.add('section-hidden');
+            
+            // Tampilkan bagian input data
+            document.getElementById('inputSection').classList.remove('section-hidden');
+            document.getElementById('searchSection').classList.add('section-hidden');
+            document.getElementById('resultSection').classList.add('section-hidden');
+        }
+        
+        function showSearchSection() {
+            // Sembunyikan menu utama
+            document.getElementById('menuSelection').classList.add('section-hidden');
+            
+            // Tampilkan bagian pencarian data
+            document.getElementById('inputSection').classList.add('section-hidden');
+            document.getElementById('searchSection').classList.remove('section-hidden');
+            document.getElementById('resultSection').classList.remove('section-hidden');
+        }
+        
+        function backToMenu() {
+            // Tampilkan kembali menu utama
+            document.getElementById('menuSelection').classList.remove('section-hidden');
+            
+            // Sembunyikan semua section
+            document.getElementById('inputSection').classList.add('section-hidden');
+            document.getElementById('searchSection').classList.add('section-hidden');
+            document.getElementById('resultSection').classList.add('section-hidden');
+        }
+        
+        function resetForm() {
+            document.getElementById('formInput').reset();
+            document.getElementById('inTanggal').valueAsDate = new Date();
+            $('#inTipehp').val(null).trigger('change');
+            document.getElementById('msgInput').textContent = '';
+        }
+        
+        function closeStatusModal() {
+            document.getElementById('statusModal').classList.add('hidden');
+        }
+        
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            const qs = new URLSearchParams({
+                tanggal: document.getElementById('inTanggal').value,
+                npk: document.getElementById('inNpk').value.trim(),
+                notelp: document.getElementById('inNotelp').value.trim(),
+                cicilan: document.getElementById('inCicilan').value.trim(),
+                tipehp: $('#inTipehp').val() || '',
+                alamat: document.getElementById('inAlamat').value.trim(),
+                keterangan: document.getElementById('inKet').value.trim(),
+                status: document.getElementById('inStatus').value
+            });
+            if(!qs.get('tanggal') || !qs.get('npk')){
+                toast('Tanggal & NPK wajib diisi', false); 
+                document.getElementById('loadingSpinner').classList.add('hidden');
+                return;
+            }
+            try{
+                const res = await fetch(`${ENDPOINT}?${qs.toString()}`, { method: 'GET' });
+                const json = await res.json();
+                const el = document.getElementById('msgInput');
+                if(json.status === 'success'){
+                    el.textContent = '✓ Tersimpan';
+                    el.className = 'text-sm text-emerald-600';
+                    toast('Data baru tersimpan');
+                    // reset form
+                    resetForm();
+                } else {
+                    el.textContent = 'Gagal simpan: ' + (json.message || '');
+                    el.className = 'text-sm text-rose-600';
+                    toast('Gagal simpan data', false);
+                }
+            } catch(err){
+                toast('Error simpan: ' + err.message, false);
+            }
+            
+            // Hide loading spinner
+            document.getElementById('loadingSpinner').classList.add('hidden');
+        }
+        
+        async function handleSearchSubmit(e) {
+            e.preventDefault();
+            const npk = document.getElementById('npkCari').value.trim();
+            if(!npk) { toast("NPK wajib diisi", false); return; }
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            await loadData(npk);
+            
+            // Hide loading spinner
+            document.getElementById('loadingSpinner').classList.add('hidden');
+        }
+        
+        function handleSearchReset() {
+            document.getElementById('npkCari').value = "";
+            document.getElementById('tbody').innerHTML = "";
+            document.getElementById('countRows').textContent = "";
+            document.getElementById('infoCari').classList.add('hidden');
+        }
+        
+        async function loadData(npk){
+            try {
+                const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
+                const res = await fetch(url, { method: 'GET' });
+                const json = await res.json();
+                if(json.status !== "success") {
+                    toast(json.message || "Gagal ambil data", false);
+                    return;
+                }
+                renderTable(json.data || []);
+                document.getElementById('infoCari').classList.remove('hidden');
+                document.getElementById('infoCari').textContent = `Menampilkan data untuk NPK: ${npk}`;
+            } catch(err){
+                toast("Gagal memuat data: " + err.message, false);
+            }
+        }
+        
+        function renderTable(rows){
+            const tb = document.getElementById('tbody');
+            tb.innerHTML = "";
+            document.getElementById('countRows').textContent = `${rows.length} baris`;
+            rows.forEach((r, i)=>{
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                const tipeId = `tipe_${i}_${Date.now()}`;
+                const statusId = `status_${i}_${Date.now()}`;
+                tr.innerHTML = `
+                    <td class="px-2 py-1 text-sm text-slate-600">${i+1}</td>
+                    <td class="px-2 py-1 text-sm">${esc(r.id)}</td>
+                    <td class="px-2 py-1"><input type="date" class="tglSel border rounded px-2 py-1 w-44" value="${formatDateForInput(r.tanggal)}"></td>
+                    <td class="px-2 py-1 text-sm">${esc(r.npk)}</td>
+                    <td class="px-2 py-1"><input type="text" class="notelpSel border rounded px-2 py-1 w-40" value="${esc(r.notelp_display || r.notelp || '')}" placeholder="08xxxxxxxxxx"></td>
+                    <td class="px-2 py-1"><input type="text" class="cicilanSel border rounded px-2 py-1 w-32" value="${esc(r.cicilan)}"></td>
+                    <td class="px-2 py-1"><select id="${tipeId}" class="tipeSel border rounded px-2 py-1 w-44"></select></td>
+                    <td class="px-2 py-1"><input type="text" class="alamatSel border rounded px-2 py-1 w-64" value="${esc(r.alamat)}"></td>
+                    <td class="px-2 py-1"><input type="text" class="ketSel border rounded px-2 py-1 w-64" value="${esc(r.keterangan)}"></td>
+                    <td class="px-2 py-1"><select id="${statusId}" class="statusSel border rounded px-2 py-1 w-40"></select></td>
+                    <td class="px-2 py-1">
+                        <button class="btnUpdate px-3 py-1 rounded bg-gold-500 text-white hover:bg-gold-600">Update</button>
+                    </td>
+                `;
+                tb.appendChild(tr);
+                // Init select2 tipe hp
+                const $tipe = $(`#${tipeId}`);
+                $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
+                $tipe.select2({ 
+                    tags: true, 
+                    width: '100%', 
+                    placeholder: "Pilih / ketik",
+                    createTag: function (params) {
+                        return {
+                            id: params.term,
+                            text: params.term,
+                            newOption: true
+                        }
+                    }
+                });
+                // Status
+                const selStatus = document.getElementById(statusId);
+                selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
+                // Update handler
+                tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
+                    // Show loading spinner
+                    document.getElementById('loadingSpinner').classList.remove('hidden');
+                    
+                    const payload = {
+                        action: 'updateData',
+                        id: r.id,          // kalau Apps Script kamu pakai ID, ini membantu
+                        npk: r.npk,        // fallback by NPK
+                        tanggal: tr.querySelector('.tglSel').value,
+                        notelp: tr.querySelector('.notelpSel').value,
+                        cicilan: tr.querySelector('.cicilanSel').value,
+                        tipehp: $tipe.val(),
+                        alamat: tr.querySelector('.alamatSel').value,
+                        keterangan: tr.querySelector('.ketSel').value,
+                        status: selStatus.value
+                    };
+                    await doUpdate(payload);
+                    
+                    // Hide loading spinner
+                    document.getElementById('loadingSpinner').classList.add('hidden');
+                });
+            });
+            if(rows.length === 0){
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="11" class="px-3 py-6 text-center text-slate-500">Belum ada data</td>`;
+                tb.appendChild(tr);
+            }
+        }
+        
+        function formatDateForInput(val){
+            if(!val) return "";
+            const d = new Date(val);
+            if(isNaN(d)) {
+                const s = String(val);
+                if(s.includes('/')){
+                    const p = s.split('/');
+                    if(p.length===3){
+                        const try1 = new Date(`${p[2]}-${p[0]}-${p[1]}`);
+                        if(!isNaN(try1)) return try1.toISOString().slice(0,10);
+                        const try2 = new Date(`${p[2]}-${p[1]}-${p[0]}`);
+                        if(!isNaN(try2)) return try2.toISOString().slice(0,10);
+                    }
+                }
+                return "";
+            }
+            return d.toISOString().slice(0,10);
+        }
+        
+        async function doUpdate(payload){
+            try{
+                const fd = new URLSearchParams();
+                Object.entries(payload).forEach(([k,v])=>{
+                    if(v !== undefined && v !== null) fd.append(k, v);
+                });
+                const res = await fetch(ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body: fd.toString()
+                });
+                const json = await res.json();
+                if(json.status === 'success'){
+                    toast('Berhasil update data');
+                } else {
+                    toast(json.message || 'Gagal update', false);
+                }
+            } catch(err){
+                toast('Error update: ' + err.message, false);
+            }
+        }
+    </script>
+</body>
+</html>
