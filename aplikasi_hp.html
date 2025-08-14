@@ -1,969 +1,727 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Aplikasi HP - Koperasi Sigap Nusantara</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'poppins': ['Poppins', 'sans-serif']
-                    },
-                    colors: {
-                        'gold': {
-                            50: '#fffef0',
-                            100: '#fef9e7',
-                            200: '#f9e79f',
-                            300: '#f4d03f',
-                            400: '#f1c40f',
-                            500: '#d4af37', // Warna emas utama
-                            600: '#b8941f', // Emas gelap
-                            700: '#917712',
-                            800: '#745c0a',
-                            900: '#5a4608',
-                        },
-                        'primary': '#d4af37',        // Warna emas utama
-                        'primary-dark': '#b8941f',   // Emas gelap untuk hover
-                        'primary-light': '#f9e79f',  // Emas muda untuk background
-                        'accent': '#f4d03f',         // Emas lembut untuk gradien
-                        'koperasi-primary': '#2C3E50', // Abu tua (tetap untuk teks utama)
-                        'koperasi-secondary': '#d4af37', // Emas sebagai brand
-                        'white': '#ffffff',
-                        'gray': {
-                            50: '#f9fafb',
-                            100: '#f3f4f6',
-                            200: '#e5e7eb',
-                            300: '#d1d5db',
-                            400: '#9ca3af',
-                            500: '#6b7280',
-                            600: '#4b5563',
-                            700: '#374151',
-                            800: '#1f2937',
-                            900: '#111827'
-                        }
-                    },
-                    boxShadow: {
-                        'light': '0 4px 12px rgba(212, 175, 55, 0.1)',
-                        'inner-light': 'inset 0 1px 3px rgba(0, 0, 0, 0.1)'
-                    },
-                    animation: {
-                        'float-slow': 'float 4s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #fffef0 100%);
-            min-height: 100vh;
-            position: relative;
-            color: #2C3E50;
-        }
-        /* Background dekoratif emas lembut */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.1) 0%, transparent 50%);
-            z-index: -1;
-        }
-        /* Efek kaca (glassmorphism) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 1rem;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-        }
-        /* Tombol animasi dengan gradien emas */
-        .btn-animated {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
-            background: linear-gradient(135deg, #d4af37, #b8941f);
-            color: white;
-        }
-        .btn-animated::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: 0.6s;
-        }
-        .btn-animated:hover::before {
-            left: 100%;
-        }
-        .btn-animated:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
-        }
-        /* Kartu pilihan utama */
-        .selection-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 1rem;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
-        }
-        .selection-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.4);
-        }
-        .selection-card .icon-container {
-            background: linear-gradient(135deg, #f4d03f, #d4af37);
-            transition: all 0.3s ease;
-        }
-        .selection-card:hover .icon-container {
-            background: linear-gradient(135deg, '#d4af37', '#b8941f');
-            transform: scale(1.1) rotate(-5deg);
-        }
-        /* Custom Select Styling */
-        .hp-select-container {
-            position: relative;
-            max-width: 100%;
-        }
-        .select2-container {
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-        .select2-container--default .select2-selection--single {
-            height: 52px !important;
-            border: 2px solid #E5E7EB !important;
-            border-radius: 12px !important;
-            padding: 0 20px !important;
-            display: flex !important;
-            align-items: center !important;
-            background: linear-gradient(135deg, #ffffff 0%, '#fefefe' 100%) !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-        .select2-container--default .select2-selection--single:hover {
-            border-color: '#d4af37' !important;
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-            transform: translateY(-1px);
-        }
-        .select2-container--default.select2-container--focus .select2-selection--single,
-        .select2-container--default .select2-selection--single:focus {
-            border-color: '#d4af37' !important;
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15), 0 4px 12px rgba(212, 175, 55, 0.1) !important;
-            outline: none !important;
-            transform: translateY(-1px);
-        }
-        /* Notification styles */
-        .notification-show {
-            transform: translateY(0) !important;
-            opacity: 1 !important;
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        /* Data table styles */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            overflow-x: auto;
-            display: block;
-            white-space: nowrap;
-        }
-        .data-table th,
-        .data-table td {
-            border: 1px solid #ddd;
-            padding: 12px 8px;
-            text-align: left;
-            background: white;
-        }
-        .data-table th {
-            background: linear-gradient(135deg, '#f4d03f', '#d4af37');
-            color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-        .data-table tr:nth-child(even) {
-            background-color: '#fffef0';
-        }
-        .data-table tr:hover {
-            background-color: '#f9e79f';
-        }
-        /* Input improvements */
-        .form-input {
-            transition: all 0.3s ease;
-            border: 2px solid #E5E7EB;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-        }
-        .form-input:focus {
-            border-color: '#d4af37';
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-            outline: none;
-            transform: translateY(-1px);
-        }
-        .error-input {
-            border-color: '#EF4444' !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
-        }
-        .error-message {
-            color: '#EF4444';
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            font-weight: 500;
-        }
-        /* Status badges */
-        .status-badge {
-            display: inline-block;
-            padding: 0.375rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border: 1px solid transparent;
-        }
-        .status-verification {
-            background: linear-gradient(135deg, '#fef9e7', '#f9e79f');
-            color: '#7d6608';
-            border-color: '#d4af37';
-        }
-        .status-ok {
-            background: linear-gradient(135deg, '#eafaf1', '#d5f4e6');
-            color: '#0e6655';
-            border-color: '#27ae60';
-        }
-        .status-no-acc {
-            background: linear-gradient(135deg, '#fdedec', '#fadbd8');
-            color: '#922b21';
-            border-color: '#e74c3c';
-        }
-        .status-cancel {
-            background: linear-gradient(135deg, '#f8f9fa', '#e9ecef');
-            color: '#495057';
-            border-color: '#adb5bd';
-        }
-        /* Loading overlay */
-        .loading-overlay {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-        }
-        .loading-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-        }
-        /* Button improvements */
-        .btn-gradient {
-            background: linear-gradient(135deg, '#f4d03f', '#d4af37');
-            color: white;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-        }
-        .btn-gradient:hover {
-            background: linear-gradient(135deg, '#d4af37', '#b8941f');
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-        }
-        .btn-gradient:active {
-            transform: translateY(0);
-        }
-        /* Koperasi theme colors */
-        .bg-koperasi-primary {
-            background-color: '#2C3E50';
-        }
-        .bg-koperasi-secondary {
-            background-color: '#d4af37';
-        }
-        .text-koperasi-primary {
-            color: '#2C3E50';
-        }
-        .text-koperasi-secondary {
-            color: '#d4af37';
-        }
-        /* Print styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #outputSection,
-            #outputSection * {
-                visibility: visible;
-            }
-            #outputSection {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-        }
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            .selection-card {
-                padding: 1.5rem;
-            }
-            .selection-card h3 {
-                font-size: 1.125rem;
-            }
-            .glass-card {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-            .grid-cols-1 {
-                gap: 1rem;
-            }
-            .md\:grid-cols-2 {
-                grid-template-columns: 1fr;
-            }
-            .text-4xl,
-            .text-3xl {
-                font-size: 1.75rem;
-                line-height: 1.2;
-            }
-            .text-2xl {
-                font-size: 1.375rem;
-            }
-            .py-10 {
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: '#f1f1f1';
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: '#d4af37';
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: '#b8941f';
-        }
-        /* Animation for elements */
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-        /* Section visibility */
-        .section-hidden {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Aplikasi HP - Koperasi Sigap Nusantara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- AOS & Fonts & Icons -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- jQuery + Select2 + jQuery UI (datepicker) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <style>
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#fff,#fffef0)}
+    .section-hidden{display:none}
+    .date-input{position:relative}
+    .date-input .ui-datepicker-trigger{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#d4af37;cursor:pointer;z-index:10}
+    .select2-container{width:100%!important}
+    .warning-box{background-color:#fef3c7;border-left:4px solid #f59e0b;padding:12px;margin-bottom:16px;border-radius:.375rem}
+    .loan-item{padding:8px 12px;margin-bottom:8px;background-color:#f9fafb;border-radius:6px;border-left:3px solid #f59e0b}
+    .loan-item:last-child{margin-bottom:0}
+    .ui-datepicker-trigger{padding:8px;background:none;border:none;cursor:pointer;color:#d4af37;font-size:16px;transition:color .2s}
+    .ui-datepicker-trigger:hover{color:#b8941f}
+    .ui-datepicker-trigger:focus{outline:none;box-shadow:0 0 0 2px rgba(212,175,55,.3);border-radius:4px}
+    .date-input input[readonly]{background-color:#f9fafb;cursor:pointer}
+    .whatsapp-link { color: #25D366; text-decoration: none; }
+    .whatsapp-link:hover { text-decoration: underline; }
+    .masa-cicilan-active { color: #f59e0b; font-weight: 600; }
+    .masa-cicilan-complete { color: #10b981; font-weight: 600; }
+  </style>
 </head>
 <body class="font-poppins">
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="fixed inset-0 loading-overlay flex items-center justify-center z-50 hidden">
-        <div class="loading-content p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
-            <div
-                class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-koperasi-secondary mx-auto mb-4">
-            </div>
-            <p class="text-lg font-semibold text-gray-800">Memproses...</p>
-            <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
-        </div>
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-white/95 p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500 mx-auto mb-4"></div>
+      <p class="text-lg font-semibold text-gray-800">Memproses...</p>
+      <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
     </div>
-    <!-- Notification -->
-    <div id="notification"
-        class="fixed bottom-4 right-4 px-6 py-4 rounded-xl shadow-lg transform translate-y-16 transition-all duration-300 z-50 hidden max-w-sm opacity-0">
-        <div class="flex items-center">
-            <i id="notificationIcon" class="fas fa-check-circle mr-3 text-lg"></i>
-            <span id="notificationText" class="font-medium">Pesan notifikasi</span>
-        </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
+
+  <!-- Modal Konfirmasi -->
+  <div id="confirmModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>Konfirmasi</h3>
+        <button onclick="closeConfirmModal()" class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="mb-6">
+        <p class="text-gray-700 mb-4">NPK ini masih memiliki angsuran HP yang aktif. Apakah Anda yakin ingin melanjutkan pengajuan?</p>
+        <div id="activeLoansInfo" class="bg-yellow-50 p-3 rounded-lg text-sm text-gray-700 max-h-60 overflow-y-auto"></div>
+      </div>
+      <div class="flex justify-end gap-3 pt-4">
+        <button type="button" onclick="closeConfirmModal()" class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Batal</button>
+        <button type="button" onclick="confirmProceed()" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-medium">Lanjutkan</button>
+      </div>
     </div>
-    <!-- Modal untuk Ubah Data HP -->
-    <div id="statusModal"
-        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
-        <div class="glass-card rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-gray-800 flex items-center">
-                    <i class="fas fa-edit text-koperasi-secondary mr-2"></i>
-                    Ubah Data HP
-                </h3>
-                <button onclick="closeStatusModal()"
-                    class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="statusForm" class="space-y-4">
-                <input type="hidden" id="statusId" name="id">
-                <input type="hidden" id="statusRowNumber" name="rowNumber">
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">NPK:</label>
-                    <input type="text" id="statusNpk" readonly
-                        class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl font-mono">
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">No. Telepon:</label>
-                    <input type="text" id="statusNotelp" readonly
-                        class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl">
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Tipe HP:</label>
-                    <input type="text" id="statusTipeHp" 
-                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input">
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Alamat:</label>
-                    <textarea id="statusAlamat" rows="2"
-                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input"></textarea>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Keterangan:</label>
-                    <textarea id="statusKeterangan" rows="2"
-                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input"></textarea>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-2">Status Baru:</label>
-                    <select name="status" id="newStatus" required
-                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl form-input">
-                        <option value="">-- Pilih Status --</option>
-                        <option value="VERIFIKASI">VERIFIKASI</option>
-                        <option value="OK">OK</option>
-                        <option value="NO ACC">NO ACC</option>
-                        <option value="CANCEL">CANCEL</option>
-                    </select>
-                </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeStatusModal()"
-                        class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition font-medium">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-6 py-3 btn-gradient text-white rounded-xl font-medium">
-                        <i class="fas fa-save mr-2"></i>
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
+  </div>
+
+  <!-- Modal Ubah Data (tanpa input Nama & Instalasi) -->
+  <div id="statusModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-edit text-yellow-500 mr-2"></i>Ubah Data HP</h3>
+        <button onclick="closeStatusModal()" class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <form id="statusForm" class="space-y-4">
+        <input type="hidden" id="statusId">
+        <input type="hidden" id="statusRowNumber">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">NPK:</label>
+          <input type="text" id="statusNpk" readonly class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl font-mono">
         </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">No. Telepon:</label>
+          <input type="text" id="statusNotelp" readonly class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Tipe HP:</label>
+          <input type="text" id="statusTipeHp" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Alamat:</label>
+          <textarea id="statusAlamat" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl"></textarea>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Keterangan:</label>
+          <textarea id="statusKeterangan" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl"></textarea>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Tanggal:</label>
+          <div class="date-input">
+            <input type="text" id="statusTanggal" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="dd/mm/yyyy" readonly>
+            <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Cicilan:</label>
+          <input type="text" id="statusCicilan" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Status Baru:</label>
+          <select id="newStatus" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+            <option value="">-- Pilih Status --</option>
+            <option value="VERIFIKASI">VERIFIKASI</option>
+            <option value="OK">OK</option>
+            <option value="NO ACC">NO ACC</option>
+            <option value="CANCEL">CANCEL</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-3 pt-4">
+          <button type="button" onclick="closeStatusModal()" class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Batal</button>
+          <button type="submit" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-medium"><i class="fas fa-save mr-2"></i>Simpan</button>
+        </div>
+      </form>
     </div>
-    <!-- HP Application Screen -->
-    <div id="hpApplication" class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
-        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-            <div class="flex items-center">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
-                    <i class="fas fa-mobile-alt text-koperasi-secondary text-2xl mr-3"></i>
-                    Aplikasi HP Karyawan
-                </h2>
-            </div>
-            <div class="flex gap-3">
-                <a href="index.html"
-                    class="btn-animated px-6 py-3 rounded-xl font-medium">
-                    <i class="fas fa-home mr-2"></i> Menu Utama
-                </a>
-            </div>
-        </div>
-        
-        <!-- Pilihan Menu -->
-        <div id="menuSelection" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
-            <div onclick="showInputSection()" class="selection-card p-6 cursor-pointer">
-                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-plus-circle text-white text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Input Data HP</h3>
-                <p class="text-gray-600">Menambahkan data HP karyawan baru ke dalam sistem</p>
-            </div>
-            <div onclick="showSearchSection()" class="selection-card p-6 cursor-pointer">
-                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-search text-white text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Cari Data by NPK</h3>
-                <p class="text-gray-600">Mencari dan melihat data HP karyawan berdasarkan NPK</p>
-            </div>
-        </div>
-        
-        <!-- Input Data Section -->
-        <section id="inputSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold text-slate-800">Input Data Baru</h2>
-                <button onclick="backToMenu()"
-                    class="btn-animated px-6 py-3 rounded-xl font-medium">
-                    <i class="fas fa-arrow-left mr-2"></i> Kembali
-                </button>
-            </div>
-            <form id="formInput" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
-                    <input id="inTanggal" type="date" class="w-full border rounded-xl px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
-                    <input id="inNpk" type="text" class="w-full border rounded-xl px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">No. Telp</label>
-                    <input id="inNotelp" type="tel" class="w-full border rounded-xl px-3 py-2" placeholder="08xxxxxxxxxx">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Cicilan</label>
-                    <input id="inCicilan" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Contoh: 12x / 500.000">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Tipe HP</label>
-                    <select id="inTipehp" class="w-full border rounded-xl px-3 py-2"></select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Status</label>
-                    <select id="inStatus" class="w-full border rounded-xl px-3 py-2">
-                        <option value="">- Pilih -</option>
-                        <option>OK</option>
-                        <option>CANCEL</option>
-                        <option>NO ACC</option>
-                        <option>VERIFIKASI</option>
-                    </select>
-                </div>
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Alamat Kirim</label>
-                    <input id="inAlamat" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Alamat lengkap">
-                </div>
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
-                    <textarea id="inKet" rows="2" class="w-full border rounded-xl px-3 py-2" placeholder="Catatan tambahan"></textarea>
-                </div>
-                <div class="md:col-span-3 flex gap-2">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-gold-500 text-white hover:bg-gold-600">Simpan</button>
-                    <button type="button" onclick="resetForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
-                    <span id="msgInput" class="text-sm text-slate-500"></span>
-                </div>
-            </form>
-        </section>
-        
-        <!-- Cari Data Section -->
-        <section id="searchSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold text-slate-800">Cari Data by NPK</h2>
-                <button onclick="backToMenu()"
-                    class="btn-animated px-6 py-3 rounded-xl font-medium">
-                    <i class="fas fa-arrow-left mr-2"></i> Kembali
-                </button>
-            </div>
-            <form id="formCari" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
-                    <input id="npkCari" type="text" class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-gold-500 outline-none" placeholder="Masukkan NPK..." required>
-                </div>
-                <div class="md:col-span-2 flex gap-2">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-gold-500 text-white hover:bg-gold-600">Cari</button>
-                    <button type="button" id="btnReset" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
-                </div>
-            </form>
-            <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
-        </section>
-        
-        <!-- Tabel Hasil Pencarian -->
-        <section id="resultSection" class="bg-white rounded-2xl shadow p-4 md:p-6 section-hidden">
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-xl font-semibold text-slate-800">Hasil Pencarian</h2>
-                <div class="text-sm text-slate-500" id="countRows"></div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full border border-slate-200 rounded-xl overflow-hidden" id="tblData">
-                    <thead class="bg-slate-100 text-slate-700">
-                        <tr>
-                            <th class="px-2 py-1">#</th>
-                            <th class="px-2 py-1">ID</th>
-                            <th class="px-2 py-1">Tanggal</th>
-                            <th class="px-2 py-1">NPK</th>
-                            <th class="px-2 py-1">No. Telp</th>
-                            <th class="px-2 py-1">Cicilan</th>
-                            <th class="px-2 py-1">Tipe HP</th>
-                            <th class="px-2 py-1">Alamat Kirim</th>
-                            <th class="px-2 py-1">Keterangan</th>
-                            <th class="px-2 py-1">Status</th>
-                            <th class="px-2 py-1">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody" class="divide-y"></tbody>
-                </table>
-            </div>
-        </section>
+  </div>
+
+  <div class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
+    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-800"><i class="fas fa-mobile-alt text-yellow-500 mr-3"></i>Aplikasi HP Karyawan</h2>
+      <a href="index.html" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-home mr-2"></i>Menu Utama</a>
     </div>
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
-    <script>
-        // ==== ENDPOINT WEB APP MU ====
-        const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyiYRjZPua2w9iKAInp3LCjmP4JUID7xcvCNxt71Y7-K57bjvE-SvoHgEWb1-RBlz9O/exec';
-        // ==== Utils ====
-        const toast = (msg, ok=true) => {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-gold-500 text-white" : "bg-rose-600 text-white");
-            t.style.opacity = 1; t.style.display = 'block';
-            setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 1800);
-        };
-        const esc = s => (s ?? "").toString();
-        // ==== Master pilihan ====
-        const tipeHpOptions = [
-            "", 
-            "VIVO Y29 6/128",
-            "VIVO Y29 8/128",
-            "VIVO Y29 8/256",
-            "Y19S PRO 4/64 GB",
-            "Y19S PRO 4/128 GB",
-            "Y19S PRO 6/128 GB",
-            "REDMI 14C 6/128",
-            "REDMI 14C 8/256",
-            "REDMI NOTE 14 8/128",
-            "REDMI NOTE 14 8/256",
-            "REDMI NOTE 14 8/256 5G",
-            "REDMI NOTE 14 12/512 5G",
-            "REDMI 13 8/128",
-            "REDMI 13 8/256",
-            "REDMI POCO PAD 8/256",
-            "OPPO A60 8/256",
-            "OPPO A3X 6/128",
-            "REALME C75 8/128",
-            "REALME C75 8/256",
-            "REALME NOTE 60 6/128",
-            "SAMSUNG A06 4/64",
-            "SAMSUNG A06 4/128",
-            "SAMSUNG A06 6/128",
-            "SAMSUNG A16 8/128",
-            "SAMSUNG A16 8/256",
-            "SAMSUNG A16 8/256 5G",
-            "SMART 10 4/128 GB",
-            "SMART 10 PLUS 8/128 GB",
-            "HOT 60i 8/256 GB",
-            "HOT 60 PRO 8/256 GB",
-            "INFINIX HOT 50 PRO+ 8/256",
-            "TECNO SPARK GO 1 4/128",
-            "POVA 7 8/128 GB",
-            "POVA 7 8/256 GB",
-            "CAMON 40 8/256 GB",
-            "ADVAN TAB VX LITE 6/128GB",
-            "Lainnya"
-        ];
-        const statusList = ["", "OK", "CANCEL", "NO ACC", "VERIFIKASI"];
-        // ==== Select2 input form ====
-        $(document).ready(function(){
-            $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
-            $('#inTipehp').select2({ 
-                placeholder: "Pilih / ketik tipe HP", 
-                tags: true, 
-                width: '100%',
-                createTag: function (params) {
-                    return {
-                        id: params.term,
-                        text: params.term,
-                        newOption: true
-                    }
-                }
-            });
-            
-            // Set default tanggal ke hari ini
-            document.getElementById('inTanggal').valueAsDate = new Date();
-            
-            // Tambahkan event listener untuk form
-            document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
-            document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
-            document.getElementById('btnReset').addEventListener('click', handleSearchReset);
+
+    <!-- Menu -->
+    <div id="menuSelection" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
+      <div onclick="showInputSection()" class="p-6 rounded-xl bg-white border hover:shadow cursor-pointer">
+        <div class="w-16 h-16 rounded-full bg-yellow-500 text-white flex items-center justify-center mb-3"><i class="fas fa-plus-circle text-3xl"></i></div>
+        <h3 class="text-xl font-bold text-gray-800 mb-1">Input Data HP</h3>
+        <p class="text-gray-600">Menambahkan data HP karyawan</p>
+      </div>
+      <div onclick="showSearchSection()" class="p-6 rounded-xl bg-white border hover:shadow cursor-pointer">
+        <div class="w-16 h-16 rounded-full bg-yellow-500 text-white flex items-center justify-center mb-3"><i class="fas fa-search text-3xl"></i></div>
+        <h3 class="text-xl font-bold text-gray-800 mb-1">Cari Data by NPK</h3>
+        <p class="text-gray-600">Melihat riwayat berdasarkan NPK</p>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <section id="inputSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold text-slate-800">Input Data Baru</h2>
+        <button onclick="backToMenu()" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+      </div>
+
+      <div id="warningContainer" class="warning-box hidden">
+        <div class="flex items-start">
+          <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-2"></i>
+          <div>
+            <p class="font-medium text-yellow-800">Peringatan</p>
+            <p id="warningMessage" class="text-yellow-700 text-sm"></p>
+            <div id="activeLoansList" class="mt-2 space-y-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <form id="formInput" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
+          <div class="date-input">
+            <input id="inTanggal" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="dd/mm/yyyy" readonly required>
+            <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
+          <input id="inNpk" type="text" class="w-full border rounded-xl px-3 py-2" required>
+          <p id="npkWarning" class="text-xs text-rose-600 mt-1 hidden"></p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">No. Telp</label>
+          <input id="inNotelp" type="tel" class="w-full border rounded-xl px-3 py-2" placeholder="08xxxxxxxxxx">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">Cicilan</label>
+          <input id="inCicilan" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Contoh: 12x / 500.000">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">Tipe HP</label>
+          <select id="inTipehp" class="w-full border rounded-xl px-3 py-2"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">Status</label>
+          <select id="inStatus" class="w-full border rounded-xl px-3 py-2">
+            <option value="">- Pilih -</option>
+            <option>OK</option>
+            <option>CANCEL</option>
+            <option>NO ACC</option>
+            <option>VERIFIKASI</option>
+          </select>
+        </div>
+        <div class="md:col-span-3">
+          <label class="block text-sm font-medium text-slate-600 mb-1">Alamat Kirim</label>
+          <input id="inAlamat" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Alamat lengkap">
+        </div>
+        <div class="md:col-span-3">
+          <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
+          <textarea id="inKet" rows="2" class="w-full border rounded-xl px-3 py-2" placeholder="Catatan tambahan"></textarea>
+        </div>
+
+        <div class="md:col-span-3 flex items-center">
+          <input type="checkbox" id="ignoreActiveLoan" class="mr-2 h-5 w-5 text-yellow-600 rounded focus:ring-yellow-500">
+          <label for="ignoreActiveLoan" class="text-sm font-medium text-slate-700">Lanjutkan meskipun ada angsuran aktif</label>
+        </div>
+
+        <div class="md:col-span-3 flex gap-2 items-center">
+          <button id="btnSimpan" type="submit" class="px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
+          <button type="button" onclick="resetForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
+          <span id="msgInput" class="text-sm text-slate-500"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- Cari -->
+    <section id="searchSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold text-slate-800">Cari Data by NPK</h2>
+        <button onclick="backToMenu()" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+      </div>
+      <form id="formCari" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+        <div>
+          <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
+          <input id="npkCari" type="text" class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="Masukkan NPK..." required>
+        </div>
+        <div class="md:col-span-2 flex gap-2">
+          <button type="submit" class="px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600">Cari</button>
+          <button type="button" id="btnReset" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
+          <button type="button" onclick="refreshMasaCicilan()" class="px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600">
+            <i class="fas fa-sync-alt mr-1"></i> Refresh Masa Cicilan
+          </button>
+        </div>
+      </form>
+      <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
+    </section>
+
+    <!-- Hasil -->
+    <section id="resultSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-semibold text-slate-800">Hasil Pencarian</h2>
+        <div class="text-sm text-slate-500" id="countRows"></div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border border-slate-200 rounded-xl overflow-hidden" id="tblData">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-2 py-1">#</th>
+              <th class="px-2 py-1">ID</th>
+              <th class="px-2 py-1">Tanggal</th>
+              <th class="px-2 py-1">NPK</th>
+              <th class="px-2 py-1">Nama</th>
+              <th class="px-2 py-1">No. Telp</th>
+              <th class="px-2 py-1">Instalasi</th>
+              <th class="px-2 py-1">Cicilan</th>
+              <th class="px-2 py-1">Tipe HP</th>
+              <th class="px-2 py-1">Alamat Kirim</th>
+              <th class="px-2 py-1">Keterangan</th>
+              <th class="px-2 py-1">Status</th>
+              <th class="px-2 py-1">Masa Cicilan</th>
+              <th class="px-2 py-1">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbody" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ===== ENDPOINT (mengikuti file terakhir yang kamu kirim) =====
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzbRw2l1r79pS8bB2SpptGYWQyszaKFwoqMB1H-Q52yxfOjMTycG5P-BM9nR2W0xVPU/exec';
+
+    // ===== Toast & Spinner =====
+    const toast = (msg, ok=true) => {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-yellow-600 text-white" : "bg-rose-600 text-white");
+      t.style.opacity = 1; t.style.display = 'block';
+      setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 2000);
+    };
+    const showSpinner = ()=>document.getElementById('loadingSpinner').classList.remove('hidden');
+    const hideSpinner = ()=>document.getElementById('loadingSpinner').classList.add('hidden');
+    const esc = s => (s ?? "").toString();
+
+    // ===== Tanggal Helpers (DD/MM/YYYY) =====
+    function fmtDDMMYYYY(d){
+      const dd=String(d.getDate()).padStart(2,'0');
+      const mm=String(d.getMonth()+1).padStart(2,'0');
+      const yy=d.getFullYear();
+      return `${dd}/${mm}/${yy}`;
+    }
+    function formatDateToDDMMYYYY(val){
+      if(!val) return "";
+      if(typeof val==='string' && val.includes('/')) {
+        const [d,m,y]=val.split('/');
+        if(d&&m&&y) return `${d.padStart(2,'0')}/${m.padStart(2,'0')}/${y}`;
+      }
+      const d=new Date(val);
+      if(isNaN(d)) return "";
+      return fmtDDMMYYYY(d);
+    }
+    function convertDateForSorting(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split('/');
+      if (parts.length !== 3) return dateStr;
+      return parts[2] + parts[1] + parts[0]; // YYYYMMDD
+    }
+
+    // ===== Katalog & Status =====
+    const tipeHpOptions = ["", "VIVO Y29 6/128", "VIVO Y29 8/128", "VIVO Y29 8/256", "Y19S PRO 4/64 GB", "Y19S PRO 4/128 GB", "Y19S PRO 6/128 GB", "REDMI 14C 6/128", "REDMI 14C 8/256", "REDMI NOTE 14 8/128", "REDMI NOTE 14 8/256", "REDMI NOTE 14 8/256 5G", "REDMI NOTE 14 12/512 5G", "REDMI 13 8/128", "REDMI 13 8/256", "REDMI POCO PAD 8/256", "OPPO A60 8/256", "OPPO A3X 6/128", "REALME C75 8/128", "REALME C75 8/256", "REALME NOTE 60 6/128", "SAMSUNG A06 4/64", "SAMSUNG A06 4/128", "SAMSUNG A06 6/128", "SAMSUNG A16 8/128", "SAMSUNG A16 8/256", "SAMSUNG A16 8/256 5G", "SMART 10 4/128 GB", "SMART 10 PLUS 8/128 GB", "HOT 60i 8/256 GB", "HOT 60 PRO 8/256 GB", "INFINIX HOT 50 PRO+ 8/256", "TECNO SPARK GO 1 4/128", "POVA 7 8/128 GB", "POVA 7 8/256 GB", "CAMON 40 8/256 GB", "ADVAN TAB VX LITE 6/128GB"];
+    const statusList = ["", "OK", "CANCEL", "NO ACC", "VERIFIKASI"];
+
+    // ===== Nav Section =====
+    function showInputSection(){
+      document.getElementById('menuSelection').classList.add('section-hidden');
+      document.getElementById('inputSection').classList.remove('section-hidden');
+      document.getElementById('searchSection').classList.add('section-hidden');
+      document.getElementById('resultSection').classList.add('section-hidden');
+    }
+    function showSearchSection(){
+      document.getElementById('menuSelection').classList.add('section-hidden');
+      document.getElementById('inputSection').classList.add('section-hidden');
+      document.getElementById('searchSection').classList.remove('section-hidden');
+      document.getElementById('resultSection').classList.remove('section-hidden');
+    }
+    function backToMenu(){
+      document.getElementById('menuSelection').classList.remove('section-hidden');
+      document.getElementById('inputSection').classList.add('section-hidden');
+      document.getElementById('searchSection').classList.add('section-hidden');
+      document.getElementById('resultSection').classList.add('hidden');
+    }
+    function resetForm(){
+      document.getElementById('formInput').reset();
+      $("#inTanggal").val(fmtDDMMYYYY(new Date()));
+      $('#inTipehp').val(null).trigger('change');
+      document.getElementById('msgInput').textContent='';
+      document.getElementById('npkWarning').classList.add('hidden');
+      document.getElementById('npkWarning').textContent='';
+      document.getElementById('warningContainer').classList.add('hidden');
+      document.getElementById('btnSimpan').disabled=false;
+    }
+    function closeStatusModal(){ document.getElementById('statusModal').classList.add('hidden'); }
+    function closeConfirmModal(){ document.getElementById('confirmModal').classList.add('hidden'); }
+    function confirmProceed(){
+      document.getElementById('confirmModal').classList.add('hidden');
+      document.getElementById('ignoreActiveLoan').checked = true;
+      document.getElementById('btnSimpan').disabled = false;
+      document.getElementById('btnSimpan').click();
+    }
+
+    // ===== Deteksi aktif: perhatikan status =====
+    function isMasaCicilanAktif(val, status){
+      if(!val) return false;
+      const s = String(val).trim().toLowerCase();
+      if(!s) return false;
+
+      const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
+      if (m) {
+        const a = parseInt(m[1],10), b = parseInt(m[2],10);
+        if (a === b && String(status).toUpperCase() === 'OK') return false;
+      }
+      if (s.includes('lunas') || s.includes('selesai')) return false;
+
+      const num = parseInt(s.replace(/[^\d]/g,''),10);
+      if (!isNaN(num)) return num > 0;
+
+      if (s.includes('bulan')) return true;
+      return false;
+    }
+
+    function isCicilanAktif(val, status){
+      if(!val) return false;
+      const s = String(val).trim().toLowerCase();
+
+      const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
+      if (m) {
+        const a = parseInt(m[1],10), b = parseInt(m[2],10);
+        if (a === b && String(status).toUpperCase() === 'OK') return false;
+        if (a < b) return true;
+      }
+      return s.includes('x') && !s.includes('lunas');
+    }
+
+    // ===== Cek NPK pada input (otomatis) =====
+    let npkCheckTimer = null;
+    let activeLoansData = [];
+
+    async function cekNpkSaatInput(){
+      const npk = document.getElementById('inNpk').value.trim();
+      const warn = document.getElementById('npkWarning');
+      const warningContainer = document.getElementById('warningContainer');
+      const warningMessage = document.getElementById('warningMessage');
+      const activeLoansList = document.getElementById('activeLoansList');
+      const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
+      const btn = document.getElementById('btnSimpan');
+
+      warn.classList.add('hidden');
+      warn.textContent='';
+      warningContainer.classList.add('hidden');
+      activeLoansList.innerHTML = '';
+      btn.disabled=false;
+
+      if(!npk) return;
+
+      try{
+        const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
+        const res = await fetch(url, {method:'GET'});
+        const json = await res.json();
+        if(json.status!=='success'){ return; }
+        const data = Array.isArray(json.data)?json.data:[];
+        const aktif = data.filter(it=>{
+          const st = String(it.status||'').toUpperCase();
+          const statusAktif = (st==='OK'||st==='VERIFIKASI');
+          const cicilanAktif = isCicilanAktif(it.cicilan, it.status);
+          const masaAktif = isMasaCicilanAktif(it.masaCicilan, it.status);
+          return statusAktif && (cicilanAktif || masaAktif);
         });
-        
-        // Initialize AOS
-        document.addEventListener('DOMContentLoaded', function () {
-            AOS.init({
-                duration: 800,
-                easing: 'ease-out-cubic',
-                once: true,
-                offset: 50
+        aktif.sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
+        activeLoansData = aktif;
+
+        if(aktif.length && !ignoreCheckbox.checked){
+          btn.disabled = true;
+
+          const loanDetails = aktif.map((it,i)=>`
+            <div class="loan-item">
+              <div class="font-medium">${i+1}. Tipe: ${esc(it.tipehp)||'-'}</div>
+              <div class="text-xs mt-1">Cicilan: ${esc(it.cicilan)||'-'}, Masa Angsuran: ${esc(it.masaCicilan)||'-'}, Status: ${esc(it.status)||'-'}</div>
+            </div>`).join('');
+          activeLoansList.innerHTML = loanDetails;
+
+          warningMessage.textContent = `NPK ini masih memiliki ${aktif.length} angsuran HP yang aktif. Centang opsi "Lanjutkan meskipun ada angsuran aktif" jika ingin melanjutkan pengajuan.`;
+          warningContainer.classList.remove('hidden');
+
+          toast('Tidak bisa pengajuan: masih ada angsuran HP yang belum selesai', false);
+        }
+      }catch(err){
+        console.warn('Cek NPK gagal:', err);
+      }
+    }
+
+    // ===== Submit INPUT =====
+    async function handleFormSubmit(e){
+      e.preventDefault();
+      const btn = document.getElementById('btnSimpan');
+      const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
+
+      if(btn.disabled && !ignoreCheckbox.checked){
+        const sortedLoans = [...activeLoansData].sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
+        document.getElementById('activeLoansInfo').innerHTML = sortedLoans.map((it,i)=>`
+          <div class="loan-item">
+            <div class="font-medium">${i+1}. Tipe: ${esc(it.tipehp)||'-'}</div>
+            <div class="text-xs mt-1">Cicilan: ${esc(it.cicilan)||'-'}, Masa: ${esc(it.masaCicilan)||'-'}, Status: ${esc(it.status)||'-'}</div>
+          </div>`).join('');
+        document.getElementById('confirmModal').classList.remove('hidden');
+        return;
+      }
+
+      showSpinner();
+      const tanggal = formatDateToDDMMYYYY(document.getElementById('inTanggal').value);
+      const qs = new URLSearchParams({
+        tanggal,
+        npk: document.getElementById('inNpk').value.trim(),
+        notelp: document.getElementById('inNotelp').value.trim(),
+        cicilan: document.getElementById('inCicilan').value.trim(),
+        tipehp: $('#inTipehp').val() || '',
+        alamat: document.getElementById('inAlamat').value.trim(),
+        keterangan: document.getElementById('inKet').value.trim(),
+        status: document.getElementById('inStatus').value
+      });
+      if(!qs.get('tanggal') || !qs.get('npk')){
+        toast('Tanggal & NPK wajib diisi', false);
+        hideSpinner();
+        return;
+      }
+
+      if(!ignoreCheckbox.checked){
+        try{
+          const npk = qs.get('npk');
+          const chkRes = await fetch(`${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`, {method:'GET'});
+          const chkJson = await chkRes.json();
+          if(chkJson.status==='success'){
+            const data = chkJson.data||[];
+            const hasAktif = data.some(it=>{
+              const st = String(it.status||'').toUpperCase();
+              const statusAktif = (st==='OK'||st==='VERIFIKASI');
+              return statusAktif && (isCicilanAktif(it.cicilan, it.status) || isMasaCicilanAktif(it.masaCicilan, it.status));
             });
+            if(hasAktif){
+              hideSpinner();
+              toast('Tidak bisa pengajuan: masih ada angsuran HP yang belum selesai', false);
+              document.getElementById('btnSimpan').disabled = true;
+              const warn = document.getElementById('npkWarning');
+              warn.textContent = 'Masih ada angsuran aktif. Selesaikan terlebih dahulu.';
+              warn.classList.remove('hidden');
+              return;
+            }
+          }
+        }catch(err){
+          console.warn('Error checking active loans:', err);
+        }
+      }
+
+      try{
+        const res = await fetch(`${ENDPOINT}?${qs.toString()}`, {method:'GET'});
+        const json = await res.json();
+        const el = document.getElementById('msgInput');
+        if(json.status==='success'){
+          el.textContent='✓ Tersimpan';
+          el.className='text-sm text-emerald-600';
+          toast('Data baru tersimpan');
+          resetForm();
+        }else{
+          el.textContent='Gagal simpan: '+(json.message||'');
+          el.className='text-sm text-rose-600';
+          toast('Gagal simpan data', false);
+        }
+      }catch(err){
+        toast('Error simpan: '+err.message, false);
+      }
+      hideSpinner();
+    }
+
+    // ===== Refresh Masa Cicilan =====
+    async function refreshMasaCicilan() {
+      showSpinner();
+      try {
+        const res = await fetch(`${ENDPOINT}?action=refreshAll`, {method:'GET'});
+        const json = await res.json();
+        if(json.status === 'success') {
+          toast('Masa cicilan berhasil diperbarui');
+          const npk = document.getElementById('npkCari').value.trim();
+          if(npk) { await loadData(npk); }
+        } else {
+          toast('Gagal refresh masa cicilan: ' + (json.message || ''), false);
+        }
+      } catch(err) {
+        toast('Error refresh masa cicilan: ' + err.message, false);
+      }
+      hideSpinner();
+    }
+
+    // ===== Pencarian & Tabel =====
+    async function handleSearchSubmit(e){
+      e.preventDefault();
+      const npk = document.getElementById('npkCari').value.trim();
+      if(!npk){ toast('NPK wajib diisi', false); return; }
+      showSpinner();
+      await loadData(npk);
+      hideSpinner();
+    }
+    function handleSearchReset(){
+      document.getElementById('npkCari').value='';
+      document.getElementById('tbody').innerHTML='';
+      document.getElementById('countRows').textContent='';
+      document.getElementById('infoCari').classList.add('hidden');
+    }
+    async function loadData(npk){
+      try{
+        const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
+        const res = await fetch(url,{method:'GET'});
+        const json = await res.json();
+        if(json.status!=='success'){ toast(json.message||'Gagal ambil data', false); return; }
+        renderTable(json.data||[]);
+        document.getElementById('infoCari').classList.remove('hidden');
+        document.getElementById('infoCari').textContent=`Menampilkan data untuk NPK: ${npk}`;
+      }catch(err){ toast('Gagal memuat data: '+err.message,false); }
+    }
+    function renderTable(rows){
+      const tb=document.getElementById('tbody'); tb.innerHTML='';
+      document.getElementById('countRows').textContent=`${rows.length} baris`;
+      rows.forEach((r,i)=>{
+        const tr=document.createElement('tr'); tr.className='hover:bg-slate-50';
+        const tanggalId=`tgl_${i}_${Date.now()}`; const tipeId=`tipe_${i}_${Date.now()}`; const statusId=`sts_${i}_${Date.now()}`;
+        const formattedDate=formatDateToDDMMYYYY(r.tanggal);
+
+        let notelpHtml = esc(r.notelp || '');
+        if (r.notelp_link) {
+          notelpHtml = `<a href="${r.notelp_link}" target="_blank" class="whatsapp-link">${esc(r.notelp || '')} <i class="fab fa-whatsapp"></i></a>`;
+        }
+
+        let masaCicilanHtml = esc(r.masaCicilan || '');
+        if (r.masaCicilan) {
+          if (r.masaCicilan.includes('LENGKAP') || r.masaCicilan.toLowerCase().includes('lunas')) {
+            masaCicilanHtml = `<span class="masa-cicilan-complete">${masaCicilanHtml}</span>`;
+          } else if (r.masaCicilan.includes('Sisa')) {
+            masaCicilanHtml = `<span class="masa-cicilan-active">${masaCicilanHtml}</span>`;
+          }
+        }
+
+        tr.innerHTML = `
+          <td class="px-2 py-1 text-sm text-slate-600">${i+1}</td>
+          <td class="px-2 py-1 text-sm">${esc(r.id)}</td>
+          <td class="px-2 py-1">
+            <div class="date-input">
+              <input type="text" id="${tanggalId}" class="border rounded px-2 py-1 w-32" value="${formattedDate}" placeholder="dd/mm/yyyy" readonly>
+              <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
+            </div>
+          </td>
+          <td class="px-2 py-1 text-sm">${esc(r.npk)}</td>
+          <td class="px-2 py-1 text-sm">${esc(r.nama || '')}</td>
+          <td class="px-2 py-1">${notelpHtml}</td>
+          <td class="px-2 py-1 text-sm">${esc(r.instalasi || '')}</td>
+          <td class="px-2 py-1"><input type="text" class="cicilanSel border rounded px-2 py-1 w-32" value="${esc(r.cicilan)}"></td>
+          <td class="px-2 py-1"><select id="${tipeId}" class="tipeSel border rounded px-2 py-1 w-44"></select></td>
+          <td class="px-2 py-1"><input type="text" class="alamatSel border rounded px-2 py-1 w-64" value="${esc(r.alamat)}"></td>
+          <td class="px-2 py-1"><input type="text" class="ketSel border rounded px-2 py-1 w-64" value="${esc(r.keterangan)}"></td>
+          <td class="px-2 py-1"><select id="${statusId}" class="statusSel border rounded px-2 py-1 w-40"></select></td>
+          <td class="px-2 py-1 text-sm">${masaCicilanHtml}</td>
+          <td class="px-2 py-1">
+            <button class="btnUpdate px-3 py-1 rounded bg-yellow-500 text-white hover:bg-yellow-600">Update</button>
+          </td>`;
+        document.getElementById('tbody').appendChild(tr);
+
+        $(`#${tanggalId}`).datepicker({
+          dateFormat:"dd/mm/yy",
+          changeMonth:true,
+          changeYear:true,
+          yearRange:"2020:2030",
+          showOn: "button",
+          buttonText: ""
         });
-        
-        // Main navigation functions
-        function goBack() {
-            // Fungsi untuk kembali ke halaman sebelumnya
-            window.history.back();
+
+        const $tipe=$(`#${tipeId}`);
+        $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
+        $tipe.select2({tags:true,width:'100%',placeholder:"Pilih / ketik",createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
+
+        const selStatus=document.getElementById(statusId);
+        selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
+
+        tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
+          showSpinner();
+          const payload = {
+            action:'updateData',
+            id:r.id,
+            npk:r.npk,
+            tanggal: document.getElementById(tanggalId).value, // DD/MM/YYYY
+            cicilan: tr.querySelector('.cicilanSel').value,
+            tipehp: $tipe.val(),
+            alamat: tr.querySelector('.alamatSel').value,
+            keterangan: tr.querySelector('.ketSel').value,
+            status: selStatus.value
+          };
+          await doUpdate(payload);
+          hideSpinner();
+        });
+      });
+
+      if(rows.length===0){
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td colspan="14" class="px-3 py-6 text-center text-slate-500">Belum ada data</td>`;
+        document.getElementById('tbody').appendChild(tr);
+      }
+    }
+
+    async function doUpdate(payload){
+      try{
+        const fd = new URLSearchParams();
+        Object.entries(payload).forEach(([k,v])=>{ if(v!==undefined&&v!==null) fd.append(k,v); });
+        const res = await fetch(ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+          body:fd.toString()
+        });
+        const json = await res.json();
+        if(json.status==='success'){ toast('Berhasil update data'); }
+        else { toast(json.message||'Gagal update',false); }
+      }catch(err){ toast('Error update: '+err.message,false); }
+    }
+
+    // ===== Init =====
+    $(document).ready(function(){
+      $("#inTanggal").datepicker({
+        dateFormat:"dd/mm/yy",
+        changeMonth:true,
+        changeYear:true,
+        yearRange:"2020:2030",
+        showOn: "button",
+        buttonText: ""
+      });
+      $("#inTanggal").val(fmtDDMMYYYY(new Date()));
+
+      $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
+      $('#inTipehp').select2({placeholder:"Pilih / ketik tipe HP",tags:true,width:'100%',createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
+
+      document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
+      document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
+      document.getElementById('btnReset').addEventListener('click', handleSearchReset);
+
+      document.getElementById('ignoreActiveLoan').addEventListener('change', function() {
+        if (this.checked) {
+          document.getElementById('btnSimpan').disabled = false;
+          document.getElementById('npkWarning').classList.add('hidden');
+          document.getElementById('warningContainer').classList.add('hidden');
+        } else {
+          cekNpkSaatInput();
         }
-        
-        function showInputSection() {
-            // Sembunyikan menu utama
-            document.getElementById('menuSelection').classList.add('section-hidden');
-            
-            // Tampilkan bagian input data
-            document.getElementById('inputSection').classList.remove('section-hidden');
-            document.getElementById('searchSection').classList.add('section-hidden');
-            document.getElementById('resultSection').classList.add('section-hidden');
-        }
-        
-        function showSearchSection() {
-            // Sembunyikan menu utama
-            document.getElementById('menuSelection').classList.add('section-hidden');
-            
-            // Tampilkan bagian pencarian data
-            document.getElementById('inputSection').classList.add('section-hidden');
-            document.getElementById('searchSection').classList.remove('section-hidden');
-            document.getElementById('resultSection').classList.remove('section-hidden');
-        }
-        
-        function backToMenu() {
-            // Tampilkan kembali menu utama
-            document.getElementById('menuSelection').classList.remove('section-hidden');
-            
-            // Sembunyikan semua section
-            document.getElementById('inputSection').classList.add('section-hidden');
-            document.getElementById('searchSection').classList.add('section-hidden');
-            document.getElementById('resultSection').classList.add('section-hidden');
-        }
-        
-        function resetForm() {
-            document.getElementById('formInput').reset();
-            document.getElementById('inTanggal').valueAsDate = new Date();
-            $('#inTipehp').val(null).trigger('change');
-            document.getElementById('msgInput').textContent = '';
-        }
-        
-        function closeStatusModal() {
-            document.getElementById('statusModal').classList.add('hidden');
-        }
-        
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            // Show loading spinner
-            document.getElementById('loadingSpinner').classList.remove('hidden');
-            
-            const qs = new URLSearchParams({
-                tanggal: document.getElementById('inTanggal').value,
-                npk: document.getElementById('inNpk').value.trim(),
-                notelp: document.getElementById('inNotelp').value.trim(),
-                cicilan: document.getElementById('inCicilan').value.trim(),
-                tipehp: $('#inTipehp').val() || '',
-                alamat: document.getElementById('inAlamat').value.trim(),
-                keterangan: document.getElementById('inKet').value.trim(),
-                status: document.getElementById('inStatus').value
-            });
-            if(!qs.get('tanggal') || !qs.get('npk')){
-                toast('Tanggal & NPK wajib diisi', false); 
-                document.getElementById('loadingSpinner').classList.add('hidden');
-                return;
-            }
-            try{
-                const res = await fetch(`${ENDPOINT}?${qs.toString()}`, { method: 'GET' });
-                const json = await res.json();
-                const el = document.getElementById('msgInput');
-                if(json.status === 'success'){
-                    el.textContent = '✓ Tersimpan';
-                    el.className = 'text-sm text-emerald-600';
-                    toast('Data baru tersimpan');
-                    // reset form
-                    resetForm();
-                } else {
-                    el.textContent = 'Gagal simpan: ' + (json.message || '');
-                    el.className = 'text-sm text-rose-600';
-                    toast('Gagal simpan data', false);
-                }
-            } catch(err){
-                toast('Error simpan: ' + err.message, false);
-            }
-            
-            // Hide loading spinner
-            document.getElementById('loadingSpinner').classList.add('hidden');
-        }
-        
-        async function handleSearchSubmit(e) {
-            e.preventDefault();
-            const npk = document.getElementById('npkCari').value.trim();
-            if(!npk) { toast("NPK wajib diisi", false); return; }
-            
-            // Show loading spinner
-            document.getElementById('loadingSpinner').classList.remove('hidden');
-            
-            await loadData(npk);
-            
-            // Hide loading spinner
-            document.getElementById('loadingSpinner').classList.add('hidden');
-        }
-        
-        function handleSearchReset() {
-            document.getElementById('npkCari').value = "";
-            document.getElementById('tbody').innerHTML = "";
-            document.getElementById('countRows').textContent = "";
-            document.getElementById('infoCari').classList.add('hidden');
-        }
-        
-        async function loadData(npk){
-            try {
-                const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
-                const res = await fetch(url, { method: 'GET' });
-                const json = await res.json();
-                if(json.status !== "success") {
-                    toast(json.message || "Gagal ambil data", false);
-                    return;
-                }
-                renderTable(json.data || []);
-                document.getElementById('infoCari').classList.remove('hidden');
-                document.getElementById('infoCari').textContent = `Menampilkan data untuk NPK: ${npk}`;
-            } catch(err){
-                toast("Gagal memuat data: " + err.message, false);
-            }
-        }
-        
-        function renderTable(rows){
-            const tb = document.getElementById('tbody');
-            tb.innerHTML = "";
-            document.getElementById('countRows').textContent = `${rows.length} baris`;
-            rows.forEach((r, i)=>{
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                const tipeId = `tipe_${i}_${Date.now()}`;
-                const statusId = `status_${i}_${Date.now()}`;
-                tr.innerHTML = `
-                    <td class="px-2 py-1 text-sm text-slate-600">${i+1}</td>
-                    <td class="px-2 py-1 text-sm">${esc(r.id)}</td>
-                    <td class="px-2 py-1"><input type="date" class="tglSel border rounded px-2 py-1 w-44" value="${formatDateForInput(r.tanggal)}"></td>
-                    <td class="px-2 py-1 text-sm">${esc(r.npk)}</td>
-                    <td class="px-2 py-1"><input type="text" class="notelpSel border rounded px-2 py-1 w-40" value="${esc(r.notelp_display || r.notelp || '')}" placeholder="08xxxxxxxxxx"></td>
-                    <td class="px-2 py-1"><input type="text" class="cicilanSel border rounded px-2 py-1 w-32" value="${esc(r.cicilan)}"></td>
-                    <td class="px-2 py-1"><select id="${tipeId}" class="tipeSel border rounded px-2 py-1 w-44"></select></td>
-                    <td class="px-2 py-1"><input type="text" class="alamatSel border rounded px-2 py-1 w-64" value="${esc(r.alamat)}"></td>
-                    <td class="px-2 py-1"><input type="text" class="ketSel border rounded px-2 py-1 w-64" value="${esc(r.keterangan)}"></td>
-                    <td class="px-2 py-1"><select id="${statusId}" class="statusSel border rounded px-2 py-1 w-40"></select></td>
-                    <td class="px-2 py-1">
-                        <button class="btnUpdate px-3 py-1 rounded bg-gold-500 text-white hover:bg-gold-600">Update</button>
-                    </td>
-                `;
-                tb.appendChild(tr);
-                // Init select2 tipe hp
-                const $tipe = $(`#${tipeId}`);
-                $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
-                $tipe.select2({ 
-                    tags: true, 
-                    width: '100%', 
-                    placeholder: "Pilih / ketik",
-                    createTag: function (params) {
-                        return {
-                            id: params.term,
-                            text: params.term,
-                            newOption: true
-                        }
-                    }
-                });
-                // Status
-                const selStatus = document.getElementById(statusId);
-                selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
-                // Update handler
-                tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
-                    // Show loading spinner
-                    document.getElementById('loadingSpinner').classList.remove('hidden');
-                    
-                    const payload = {
-                        action: 'updateData',
-                        id: r.id,          // kalau Apps Script kamu pakai ID, ini membantu
-                        npk: r.npk,        // fallback by NPK
-                        tanggal: tr.querySelector('.tglSel').value,
-                        notelp: tr.querySelector('.notelpSel').value,
-                        cicilan: tr.querySelector('.cicilanSel').value,
-                        tipehp: $tipe.val(),
-                        alamat: tr.querySelector('.alamatSel').value,
-                        keterangan: tr.querySelector('.ketSel').value,
-                        status: selStatus.value
-                    };
-                    await doUpdate(payload);
-                    
-                    // Hide loading spinner
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                });
-            });
-            if(rows.length === 0){
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td colspan="11" class="px-3 py-6 text-center text-slate-500">Belum ada data</td>`;
-                tb.appendChild(tr);
-            }
-        }
-        
-        function formatDateForInput(val){
-            if(!val) return "";
-            const d = new Date(val);
-            if(isNaN(d)) {
-                const s = String(val);
-                if(s.includes('/')){
-                    const p = s.split('/');
-                    if(p.length===3){
-                        const try1 = new Date(`${p[2]}-${p[0]}-${p[1]}`);
-                        if(!isNaN(try1)) return try1.toISOString().slice(0,10);
-                        const try2 = new Date(`${p[2]}-${p[1]}-${p[0]}`);
-                        if(!isNaN(try2)) return try2.toISOString().slice(0,10);
-                    }
-                }
-                return "";
-            }
-            return d.toISOString().slice(0,10);
-        }
-        
-        async function doUpdate(payload){
-            try{
-                const fd = new URLSearchParams();
-                Object.entries(payload).forEach(([k,v])=>{
-                    if(v !== undefined && v !== null) fd.append(k, v);
-                });
-                const res = await fetch(ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                    body: fd.toString()
-                });
-                const json = await res.json();
-                if(json.status === 'success'){
-                    toast('Berhasil update data');
-                } else {
-                    toast(json.message || 'Gagal update', false);
-                }
-            } catch(err){
-                toast('Error update: ' + err.message, false);
-            }
-        }
-    </script>
+      });
+
+      const inNpk = document.getElementById('inNpk');
+      inNpk.addEventListener('blur', cekNpkSaatInput);
+      inNpk.addEventListener('input', ()=>{
+        clearTimeout(npkCheckTimer);
+        npkCheckTimer = setTimeout(cekNpkSaatInput, 500);
+      });
+
+      $("#statusTanggal").datepicker({
+        dateFormat:"dd/mm/yy",
+        changeMonth:true,
+        changeYear:true,
+        yearRange:"2020:2030",
+        showOn: "button",
+        buttonText: ""
+      });
+    });
+
+    AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:50});
+  </script>
 </body>
 </html>
