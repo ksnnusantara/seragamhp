@@ -44,10 +44,8 @@
       <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
     </div>
   </div>
-
   <!-- Toast -->
   <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
-
   <!-- Modal Konfirmasi -->
   <div id="confirmModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
     <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
@@ -65,7 +63,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modal Ubah Data (tanpa input Nama & Instalasi) -->
   <div id="statusModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
     <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
@@ -124,13 +121,11 @@
       </form>
     </div>
   </div>
-
   <div class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
     <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
       <h2 class="text-2xl md:text-3xl font-bold text-gray-800"><i class="fas fa-mobile-alt text-yellow-500 mr-3"></i>Aplikasi HP Karyawan</h2>
       <a href="index.html" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-home mr-2"></i>Menu Utama</a>
     </div>
-
     <!-- Menu -->
     <div id="menuSelection" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
       <div onclick="showInputSection()" class="p-6 rounded-xl bg-white border hover:shadow cursor-pointer">
@@ -144,14 +139,12 @@
         <p class="text-gray-600">Melihat riwayat berdasarkan NPK</p>
       </div>
     </div>
-
     <!-- Input -->
     <section id="inputSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold text-slate-800">Input Data Baru</h2>
         <button onclick="backToMenu()" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
       </div>
-
       <div id="warningContainer" class="warning-box hidden">
         <div class="flex items-start">
           <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-2"></i>
@@ -162,7 +155,6 @@
           </div>
         </div>
       </div>
-
       <form id="formInput" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
@@ -206,12 +198,10 @@
           <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
           <textarea id="inKet" rows="2" class="w-full border rounded-xl px-3 py-2" placeholder="Catatan tambahan"></textarea>
         </div>
-
         <div class="md:col-span-3 flex items-center">
           <input type="checkbox" id="ignoreActiveLoan" class="mr-2 h-5 w-5 text-yellow-600 rounded focus:ring-yellow-500">
           <label for="ignoreActiveLoan" class="text-sm font-medium text-slate-700">Lanjutkan meskipun ada angsuran aktif</label>
         </div>
-
         <div class="md:col-span-3 flex gap-2 items-center">
           <button id="btnSimpan" type="submit" class="px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
           <button type="button" onclick="resetForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
@@ -219,7 +209,6 @@
         </div>
       </form>
     </section>
-
     <!-- Cari -->
     <section id="searchSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
       <div class="flex items-center justify-between mb-4">
@@ -241,7 +230,6 @@
       </form>
       <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
     </section>
-
     <!-- Hasil -->
     <section id="resultSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
       <div class="flex items-center justify-between mb-3">
@@ -273,11 +261,9 @@
       </div>
     </section>
   </div>
-
   <script>
     // ===== ENDPOINT (DISAMAKAN DENGAN LINK WEB-APP TERBARU) =====
-    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHylq0kuwja-7FQgHwYas-bh9GUUKChEPZ6stylR37gBWtqyFDKe7OsZCov2aoUmPi/exec';
-
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzIU9Mf6f7ejaiO_HoTiDTVvVenYQY9dwmX7AEPJQIxhm0PMvoNzqKIrY-m1ubIgEEi/exec';
     // ===== Toast & Spinner =====
     const toast = (msg, ok=true) => {
       const t = document.getElementById('toast');
@@ -289,7 +275,6 @@
     const showSpinner = ()=>document.getElementById('loadingSpinner').classList.remove('hidden');
     const hideSpinner = ()=>document.getElementById('loadingSpinner').classList.add('hidden');
     const esc = s => (s ?? "").toString();
-
     // ===== Tanggal Helpers (DD/MM/YYYY) =====
     function fmtDDMMYYYY(d){
       const dd=String(d.getDate()).padStart(2,'0');
@@ -313,11 +298,9 @@
       if (parts.length !== 3) return dateStr;
       return parts[2] + parts[1] + parts[0]; // YYYYMMDD
     }
-
     // ===== Katalog & Status =====
     const tipeHpOptions = ["", "VIVO Y29 6/128", "VIVO Y29 8/128", "VIVO Y29 8/256", "Y19S PRO 4/64 GB", "Y19S PRO 4/128 GB", "Y19S PRO 6/128 GB", "REDMI 14C 6/128", "REDMI 14C 8/256", "REDMI NOTE 14 8/128", "REDMI NOTE 14 8/256", "REDMI NOTE 14 8/256 5G", "REDMI NOTE 14 12/512 5G", "REDMI 13 8/128", "REDMI 13 8/256", "REDMI POCO PAD 8/256", "OPPO A60 8/256", "OPPO A3X 6/128", "REALME C75 8/128", "REALME C75 8/256", "REALME NOTE 60 6/128", "SAMSUNG A06 4/64", "SAMSUNG A06 4/128", "SAMSUNG A06 6/128", "SAMSUNG A16 8/128", "SAMSUNG A16 8/256", "SAMSUNG A16 8/256 5G", "SMART 10 4/128 GB", "SMART 10 PLUS 8/128 GB", "HOT 60i 8/256 GB", "HOT 60 PRO 8/256 GB", "INFINIX HOT 50 PRO+ 8/256", "TECNO SPARK GO 1 4/128", "POVA 7 8/128 GB", "POVA 7 8/256 GB", "CAMON 40 8/256 GB", "ADVAN TAB VX LITE 6/128GB"];
     const statusList = ["", "OK", "CANCEL", "NO ACC", "VERIFIKASI"];
-
     // ===== Nav Section =====
     function showInputSection(){
       document.getElementById('menuSelection').classList.add('section-hidden');
@@ -355,31 +338,25 @@
       document.getElementById('btnSimpan').disabled = false;
       document.getElementById('btnSimpan').click();
     }
-
     // ===== Deteksi aktif: perhatikan status =====
     function isMasaCicilanAktif(val, status){
       if(!val) return false;
       const s = String(val).trim().toLowerCase();
       if(!s) return false;
-
       const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
       if (m) {
         const a = parseInt(m[1],10), b = parseInt(m[2],10);
         if (a === b && String(status).toUpperCase() === 'OK') return false;
       }
       if (s.includes('lunas') || s.includes('selesai')) return false;
-
       const num = parseInt(s.replace(/[^\d]/g,''),10);
       if (!isNaN(num)) return num > 0;
-
       if (s.includes('bulan')) return true;
       return false;
     }
-
     function isCicilanAktif(val, status){
       if(!val) return false;
       const s = String(val).trim().toLowerCase();
-
       const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
       if (m) {
         const a = parseInt(m[1],10), b = parseInt(m[2],10);
@@ -388,11 +365,9 @@
       }
       return s.includes('x') && !s.includes('lunas');
     }
-
     // ===== Cek NPK pada input (otomatis) =====
     let npkCheckTimer = null;
     let activeLoansData = [];
-
     async function cekNpkSaatInput(){
       const npk = document.getElementById('inNpk').value.trim();
       const warn = document.getElementById('npkWarning');
@@ -401,15 +376,12 @@
       const activeLoansList = document.getElementById('activeLoansList');
       const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
       const btn = document.getElementById('btnSimpan');
-
       warn.classList.add('hidden');
       warn.textContent='';
       warningContainer.classList.add('hidden');
       activeLoansList.innerHTML = '';
       btn.disabled=false;
-
       if(!npk) return;
-
       try{
         const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
         const res = await fetch(url, {method:'GET'});
@@ -425,33 +397,27 @@
         });
         aktif.sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
         activeLoansData = aktif;
-
         if(aktif.length && !ignoreCheckbox.checked){
           btn.disabled = true;
-
           const loanDetails = aktif.map((it,i)=>`
             <div class="loan-item">
               <div class="font-medium">${i+1}. Tipe: ${esc(it.tipehp)||'-'}</div>
               <div class="text-xs mt-1">Cicilan: ${esc(it.cicilan)||'-'}, Masa Angsuran: ${esc(it.masaCicilan)||'-'}, Status: ${esc(it.status)||'-'}</div>
             </div>`).join('');
           activeLoansList.innerHTML = loanDetails;
-
           warningMessage.textContent = `NPK ini masih memiliki ${aktif.length} angsuran HP yang aktif. Centang opsi "Lanjutkan meskipun ada angsuran aktif" jika ingin melanjutkan pengajuan.`;
           warningContainer.classList.remove('hidden');
-
           toast('Tidak bisa pengajuan: masih ada angsuran HP yang belum selesai', false);
         }
       }catch(err){
         console.warn('Cek NPK gagal:', err);
       }
     }
-
     // ===== Submit INPUT =====
     async function handleFormSubmit(e){
       e.preventDefault();
       const btn = document.getElementById('btnSimpan');
       const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
-
       if(btn.disabled && !ignoreCheckbox.checked){
         const sortedLoans = [...activeLoansData].sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
         document.getElementById('activeLoansInfo').innerHTML = sortedLoans.map((it,i)=>`
@@ -462,7 +428,6 @@
         document.getElementById('confirmModal').classList.remove('hidden');
         return;
       }
-
       showSpinner();
       const tanggal = formatDateToDDMMYYYY(document.getElementById('inTanggal').value);
       const qs = new URLSearchParams({
@@ -480,7 +445,6 @@
         hideSpinner();
         return;
       }
-
       if(!ignoreCheckbox.checked){
         try{
           const npk = qs.get('npk');
@@ -507,7 +471,6 @@
           console.warn('Error checking active loans:', err);
         }
       }
-
       try{
         const res = await fetch(`${ENDPOINT}?${qs.toString()}`, {method:'GET'});
         const json = await res.json();
@@ -527,7 +490,6 @@
       }
       hideSpinner();
     }
-
     // ===== Refresh Masa Cicilan =====
     async function refreshMasaCicilan() {
       showSpinner();
@@ -546,7 +508,6 @@
       }
       hideSpinner();
     }
-
     // ===== Pencarian & Tabel =====
     async function handleSearchSubmit(e){
       e.preventDefault();
@@ -576,16 +537,26 @@
     function renderTable(rows){
       const tb=document.getElementById('tbody'); tb.innerHTML='';
       document.getElementById('countRows').textContent=`${rows.length} baris`;
+      
+      // Urutkan data berdasarkan ID terkecil hingga terbesar
+      rows.sort((a, b) => {
+        const idA = parseInt(a.id, 10);
+        const idB = parseInt(b.id, 10);
+        if (!isNaN(idA) && !isNaN(idB)) {
+          return idA - idB;
+        }
+        // Fallback jika ID bukan angka
+        return a.id.localeCompare(b.id);
+      });
+      
       rows.forEach((r,i)=>{
         const tr=document.createElement('tr'); tr.className='hover:bg-slate-50';
         const tanggalId=`tgl_${i}_${Date.now()}`; const tipeId=`tipe_${i}_${Date.now()}`; const statusId=`sts_${i}_${Date.now()}`;
         const formattedDate=formatDateToDDMMYYYY(r.tanggal);
-
         let notelpHtml = esc(r.notelp || '');
         if (r.notelp_link) {
           notelpHtml = `<a href="${r.notelp_link}" target="_blank" class="whatsapp-link">${esc(r.notelp || '')} <i class="fab fa-whatsapp"></i></a>`;
         }
-
         let masaCicilanHtml = esc(r.masaCicilan || '');
         if (r.masaCicilan) {
           if (r.masaCicilan.includes('LENGKAP') || r.masaCicilan.toLowerCase().includes('lunas')) {
@@ -594,7 +565,6 @@
             masaCicilanHtml = `<span class="masa-cicilan-active">${masaCicilanHtml}</span>`;
           }
         }
-
         tr.innerHTML = `
           <td class="px-2 py-1 text-sm text-slate-600">${i+1}</td>
           <td class="px-2 py-1 text-sm">${esc(r.id)}</td>
@@ -618,7 +588,6 @@
             <button class="btnUpdate px-3 py-1 rounded bg-yellow-500 text-white hover:bg-yellow-600">Update</button>
           </td>`;
         document.getElementById('tbody').appendChild(tr);
-
         // Datepicker untuk kolom tanggal (read-only di backend update)
         $(`#${tanggalId}`).datepicker({
           dateFormat:"dd/mm/yy",
@@ -628,16 +597,13 @@
           showOn: "button",
           buttonText: ""
         });
-
         // Isi & aktifkan Select2 tipe HP
         const $tipe=$(`#${tipeId}`);
         $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
         $tipe.select2({tags:true,width:'100%',placeholder:"Pilih / ketik",createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
-
         // Isi status
         const selStatus=document.getElementById(statusId);
         selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
-
         // Tombol Update → hanya kirim field yang diizinkan backend
         tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
           showSpinner();
@@ -655,14 +621,12 @@
           hideSpinner();
         });
       });
-
       if(rows.length===0){
         const tr=document.createElement('tr');
         tr.innerHTML=`<td colspan="14" class="px-3 py-6 text-center text-slate-500">Belum ada data</td>`;
         document.getElementById('tbody').appendChild(tr);
       }
     }
-
     async function doUpdate(payload){
       try{
         const fd = new URLSearchParams();
@@ -677,7 +641,6 @@
         else { toast(json.message||'Gagal update',false); }
       }catch(err){ toast('Error update: '+err.message,false); }
     }
-
     // ===== Init =====
     $(document).ready(function(){
       // Datepicker input form
@@ -690,16 +653,13 @@
         buttonText: ""
       });
       $("#inTanggal").val(fmtDDMMYYYY(new Date()));
-
       // Select tipe HP di form input
       $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
       $('#inTipehp').select2({placeholder:"Pilih / ketik tipe HP",tags:true,width:'100%',createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
-
       // Event form
       document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
       document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
       document.getElementById('btnReset').addEventListener('click', handleSearchReset);
-
       // Checkbox override active loan
       document.getElementById('ignoreActiveLoan').addEventListener('change', function() {
         if (this.checked) {
@@ -710,7 +670,6 @@
           cekNpkSaatInput();
         }
       });
-
       // Cek NPK saat input
       const inNpk = document.getElementById('inNpk');
       inNpk.addEventListener('blur', cekNpkSaatInput);
@@ -718,7 +677,6 @@
         clearTimeout(npkCheckTimer);
         npkCheckTimer = setTimeout(cekNpkSaatInput, 500);
       });
-
       // Datepicker di modal status
       $("#statusTanggal").datepicker({
         dateFormat:"dd/mm/yy",
@@ -729,7 +687,6 @@
         buttonText: ""
       });
     });
-
     AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:50});
   </script>
 </body>
