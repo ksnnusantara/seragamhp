@@ -1,264 +1,505 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Aplikasi Koperasi Sigap Nusantara</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'poppins': ['Poppins', 'sans-serif']
-                    },
-                    colors: {
-                        'primary': '#dcbc4a',        // Warna emas utama
-                        'primary-dark': '#b89d3a',   // Emas gelap untuk hover
-                        'primary-light': '#f0e6c0',  // Emas muda untuk background
-                        'accent': '#e1c789',         // Emas lembut untuk gradien
-                        'koperasi-primary': '#2C3E50', // Abu tua (tetap untuk teks utama)
-                        'koperasi-secondary': '#dcbc4a', // Emas sebagai brand
-                        'white': '#ffffff',
-                        'gray': {
-                            50: '#f9fafb',
-                            100: '#f3f4f6',
-                            200: '#e5e7eb',
-                            300: '#d1d5db',
-                            400: '#9ca3af',
-                            500: '#6b7280',
-                            600: '#4b5563',
-                            700: '#374151',
-                            800: '#1f2937',
-                            900: '#111827'
-                        }
-                    },
-                    boxShadow: {
-                        'light': '0 4px 12px rgba(219, 188, 74, 0.1)',
-                        'inner-light': 'inset 0 1px 3px rgba(0, 0, 0, 0.1)'
-                    },
-                    animation: {
-                        'float-slow': 'float 4s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                    }
-                }
-            }
+  <meta charset="UTF-8" />
+  <title>Aplikasi Koperasi Sigap Nusantara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { 'poppins': ['Poppins', 'sans-serif'] },
+          colors: {
+            'primary':'#dcbc4a','primary-dark':'#b89d3a','primary-light':'#f0e6c0','accent':'#e1c789',
+            'koperasi-primary':'#2C3E50','koperasi-secondary':'#dcbc4a','white':'#ffffff',
+            'gray':{50:'#f9fafb',100:'#f3f4f6',200:'#e5e7eb',300:'#d1d5db',400:'#9ca3af',500:'#6b7280',600:'#4b5563',700:'#374151',800:'#1f2937',900:'#111827'}
+          }
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f7f4 100%);
-            min-height: 100vh;
-            position: relative;
-            color: #2C3E50;
-        }
-        /* Background dekoratif emas lembut */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(219, 188, 74, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(225, 199, 137, 0.1) 0%, transparent 50%);
-            z-index: -1;
-        }
-        /* Efek kaca (glassmorphism) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(219, 188, 74, 0.2);
-            border-radius: 1rem;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-        }
-        /* Tombol animasi dengan gradien emas */
-        .btn-animated {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
-        }
-        .btn-animated::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: 0.6s;
-        }
-        .btn-animated:hover::before {
-            left: 100%;
-        }
-        .btn-animated:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(219, 188, 74, 0.2);
-        }
-        /* Kartu pilihan utama */
-        .selection-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(219, 188, 74, 0.2);
-            border-radius: 1rem;
-            box-shadow: 0 4px 15px rgba(219, 188, 74, 0.1);
-        }
-        .selection-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(219, 188, 74, 0.2);
-            border-color: rgba(219, 188, 74, 0.4);
-        }
-        .selection-card .icon-container {
-            background: linear-gradient(135deg, #e1c789, #dcbc4a);
-            transition: all 0.3s ease;
-        }
-        .selection-card:hover .icon-container {
-            background: linear-gradient(135deg, #dcbc4a, #b89d3a);
-            transform: scale(1.1) rotate(-5deg);
-        }
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            .selection-card {
-                padding: 1.5rem;
-            }
-            .selection-card h3 {
-                font-size: 1.125rem;
-            }
-            .glass-card {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-            .grid-cols-1 {
-                gap: 1rem;
-            }
-            .md\\:grid-cols-2 {
-                grid-template-columns: 1fr;
-            }
-            .text-4xl,
-            .text-3xl {
-                font-size: 1.75rem;
-                line-height: 1.2;
-            }
-            .text-2xl {
-                font-size: 1.375rem;
-            }
-            .py-10 {
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3498DB;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #2980B9;
-        }
-        /* Animation for elements */
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#ffffff 0%,#f8f7f4 100%);min-height:100vh;color:#2C3E50}
+    .glass-card{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border:1px solid rgba(219,188,74,.2);border-radius:1rem;box-shadow:0 4px 30px rgba(0,0,0,.08)}
+    .btn-animated{position:relative;overflow:hidden;transition:.3s;transform:translateY(0)}
+    .btn-animated::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:.6s}
+    .btn-animated:hover::before{left:100%}
+    .btn-animated:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(219,188,74,.2)}
+    .input-field{background:rgba(255,255,255,.9);border:1px solid rgba(219,188,74,.3);transition:.3s}
+    .input-field:focus{border-color:#dcbc4a;box-shadow:0 0 0 3px rgba(219,188,74,.2)}
+    .error-message{display:none;background:rgba(239,68,68,.1);color:#ef4444;border-left:4px solid #ef4444;padding:10px 15px;border-radius:.375rem;margin-bottom:15px}
+    .success-message{display:none;background:rgba(16,185,129,.1);color:#10b981;border-left:4px solid #10b981;padding:10px 15px;border-radius:.375rem;margin-bottom:15px}
+    .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-radius:50%;border-top-color:#fff;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .badge{font-size:.75rem;line-height:1;padding:.25rem .5rem;border-radius:.375rem;display:inline-flex;align-items:center;gap:.35rem}
+  </style>
 </head>
 <body class="font-poppins">
-    <!-- Main Selection Screen -->
-    <div id="mainSelectionScreen"
-        class="container mx-auto max-w-6xl py-8 px-4 min-h-screen flex flex-col justify-center">
-        <div class="text-center mb-12">
-            <div class="mb-6 animate-float">
-                <div class="inline-block p-4 bg-white rounded-full shadow-large mb-4">
-                    <img src="logoksn.png" alt="Logo Koperasi" class="w-20 h-20 rounded-full">
-                </div>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-koperasi-primary mb-6 leading-tight">
-                Aplikasi Koperasi<br>
-                <span class="text-koperasi-secondary">Sigap Nusantara</span>
-            </h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Sistem manajemen terpadu untuk koperasi modern. Silakan pilih aplikasi yang Anda butuhkan.
-            </p>
+  <!-- ===== AUTH SCREEN (Login / Signup / Forgot) ===== -->
+  <div id="loginScreen" class="container mx-auto max-w-6xl py-8 px-4 min-h-screen flex flex-col justify-center">
+    <div class="glass-card mx-auto p-8 md:p-10 max-w-md" data-aos="fade-up">
+      <div class="text-center mb-8">
+        <div class="inline-block p-4 bg-white rounded-full shadow mb-4">
+          <img src="logoksn.png" alt="Logo Koperasi" class="w-20 h-20 rounded-full" />
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div class="selection-card rounded-3xl shadow-large p-8 text-center" onclick="showApplication('hp')"
-                data-aos="fade-right" data-aos-delay="100">
-                <div class="icon-container w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-mobile-alt text-white text-3xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Aplikasi HP</h3>
-                <p class="text-gray-600 mb-8 leading-relaxed">Kelola data HP karyawan dengan mudah dan efisien</p>
-                <button
-                    class="btn-animated btn-gradient text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center mx-auto">
-                    Pilih Aplikasi <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-            <div class="selection-card rounded-3xl shadow-large p-8 text-center" onclick="showApplication('seragam')"
-                data-aos="fade-left" data-aos-delay="200">
-                <div class="icon-container w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-tshirt text-white text-3xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Aplikasi Seragam</h3>
-                <p class="text-gray-600 mb-8 leading-relaxed">Manajemen data seragam karyawan yang terintegrasi</p>
-                <button
-                    class="btn-animated btn-gradient text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center mx-auto">
-                    Pilih Aplikasi <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+        <h1 class="text-3xl font-bold text-koperasi-primary mb-2">Koperasi Sigap Nusantara</h1>
+        <p class="text-gray-600">Silakan masuk atau daftar akun baru</p>
+      </div>
 
-    <script>
-        // Initialize AOS
-        document.addEventListener('DOMContentLoaded', function () {
-            AOS.init({
-                duration: 800,
-                easing: 'ease-out-cubic',
-                once: true,
-                offset: 50
-            });
+      <div class="error-message" id="errorMessage"><i class="fas fa-exclamation-circle mr-2"></i><span id="errorText"></span></div>
+      <div class="success-message" id="successMessage"><i class="fas fa-check-circle mr-2"></i><span id="successText"></span></div>
+
+      <!-- ====== LOGIN ====== -->
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-user text-gray-400"></i></span>
+            <input id="username" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" required placeholder="Masukkan username" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-400"></i></span>
+            <input id="password" type="password" class="input-field w-full pl-10 pr-10 py-3 rounded-lg" required placeholder="Masukkan password" />
+            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 text-gray-400 hover:text-gray-600"><i id="eyeIcon" class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 text-sm"><input id="remember-me" type="checkbox" class="h-4 w-4 text-koperasi-secondary rounded" /> Ingat saya</label>
+          <div class="space-x-3 text-sm">
+            <a href="#" id="showSignupLink" class="font-medium text-koperasi-secondary hover:text-koperasi-primary">Buat akun</a>
+            <a href="#" id="forgotPasswordLink" class="font-medium text-koperasi-secondary hover:text-koperasi-primary">Lupa password?</a>
+          </div>
+        </div>
+        <button type="submit" id="loginButton" class="btn-animated w-full bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white py-3 rounded-lg">
+          <span id="loginButtonText">Masuk</span>
+          <span id="loginButtonSpinner" class="spinner ml-2 hidden"></span>
+        </button>
+      </form>
+
+      <!-- ====== SIGNUP ====== -->
+      <form id="signupForm" class="space-y-5 hidden">
+        <div class="text-center -mb-2">
+          <h2 class="text-lg font-semibold">Daftar Akun Baru</h2>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-user text-gray-400"></i></span>
+            <input id="su_username" class="input-field w-full pl-10 pr-28 py-3 rounded-lg" placeholder="Pilih username" />
+            <span id="usernameBadge" class="absolute right-2 top-1/2 -translate-y-1/2 badge bg-gray-100 text-gray-600 border border-gray-200">
+              <i class="fa-regular fa-circle"></i> Cek
+            </span>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Min. 3 karakter. Hanya huruf/angka/underscore disarankan.</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-envelope text-gray-400"></i></span>
+            <input id="su_email" type="email" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Email aktif (untuk reset password)" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-400"></i></span>
+            <input id="su_password" type="password" class="input-field w-full pl-10 pr-10 py-3 rounded-lg" placeholder="Min 6 karakter" />
+            <button type="button" id="toggleSuPass" class="absolute inset-y-0 right-0 pr-3 text-gray-400 hover:text-gray-600"><i id="suEye1" class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-400"></i></span>
+            <input id="su_confirm" type="password" class="input-field w-full pl-10 pr-10 py-3 rounded-lg" placeholder="Ulangi password" />
+            <button type="button" id="toggleSuPass2" class="absolute inset-y-0 right-0 pr-3 text-gray-400 hover:text-gray-600"><i id="suEye2" class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" id="signupButton" class="btn-animated flex-1 bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white py-3 rounded-lg">
+            <span id="signupText">Daftar</span>
+            <span id="signupSpinner" class="spinner ml-2 hidden"></span>
+          </button>
+          <button type="button" id="backToLoginFromSignup" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300">Kembali</button>
+        </div>
+      </form>
+
+      <!-- ====== FORGOT PASSWORD (2 langkah TOKEN) ====== -->
+      <form id="forgotPasswordForm" class="space-y-5 hidden">
+        <div class="text-center -mb-2">
+          <h2 class="text-lg font-semibold">Lupa Password</h2>
+        </div>
+
+        <!-- Langkah 1: Kirim Token -->
+        <div class="p-3 bg-gray-50 rounded border">
+          <p class="text-sm text-gray-600 mb-3">Langkah 1 — Masukkan username & email terdaftar, lalu klik <b>Kirim Token</b>. Cek email Anda untuk <b>TOKEN</b>.</p>
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-user text-gray-400"></i></span>
+              <input id="fp_username" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Username" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-envelope text-gray-400"></i></span>
+              <input id="fp_email" type="email" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Email terdaftar" />
+            </div>
+          </div>
+          <button type="button" id="sendTokenButton" class="btn-animated w-full bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white py-3 rounded-lg">
+            <span id="sendTokenText">Kirim Token</span>
+            <span id="sendTokenSpinner" class="spinner ml-2 hidden"></span>
+          </button>
+        </div>
+
+        <!-- Langkah 2: Token + Password Baru -->
+        <div class="p-3 bg-gray-50 rounded border">
+          <p class="text-sm text-gray-600 mb-3">Langkah 2 — Masukkan <b>TOKEN</b> dari email, lalu buat <b>Password Baru</b>.</p>
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Token</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-key text-gray-400"></i></span>
+              <input id="fp_token" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Contoh: 483920" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-400"></i></span>
+              <input id="fp_new1" type="password" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Min 6 karakter" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ulangi Password Baru</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-400"></i></span>
+              <input id="fp_new2" type="password" class="input-field w-full pl-10 pr-3 py-3 rounded-lg" placeholder="Ulangi password" />
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button type="button" id="applyNewPasswordButton" class="btn-animated flex-1 bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white py-3 rounded-lg">
+              <span id="applyText">Ubah Password</span>
+              <span id="applySpinner" class="spinner ml-2 hidden"></span>
+            </button>
+            <button type="button" id="backToLoginButton" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300">Kembali</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== HALAMAN UTAMA ===== -->
+  <div id="mainSelectionScreen" class="container mx-auto max-w-6xl py-8 px-4 min-h-screen flex flex-col justify-center hidden">
+    <div class="text-center mb-12">
+      <img src="logoksn.png" class="w-20 h-20 rounded-full mx-auto mb-4" alt="Logo">
+      <h1 class="text-4xl md:text-5xl font-bold text-koperasi-primary mb-6 leading-tight">
+        Aplikasi Koperasi<br><span class="text-koperasi-secondary">Sigap Nusantara</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Sistem manajemen terpadu untuk koperasi modern.</p>
+      <div class="mt-6">
+        <button onclick="logout()" class="text-sm text-gray-500 hover:text-gray-700"><i class="fas fa-sign-out-alt mr-1"></i> Keluar</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div class="glass-card p-8 text-center cursor-pointer" onclick="showApplication('hp')">
+        <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-amber-300 to-amber-500 text-white">
+          <i class="fas fa-mobile-alt text-3xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Aplikasi HP</h3>
+        <p class="text-gray-600 mb-6">Kelola data HP karyawan.</p>
+        <span class="btn-animated inline-block bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white px-6 py-2 rounded-lg">Pilih Aplikasi</span>
+      </div>
+      <div class="glass-card p-8 text-center cursor-pointer" onclick="showApplication('seragam')">
+        <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-amber-300 to-amber-500 text-white">
+          <i class="fas fa-tshirt text-3xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Aplikasi Seragam</h3>
+        <p class="text-gray-600 mb-6">Manajemen seragam terintegrasi.</p>
+        <span class="btn-animated inline-block bg-gradient-to-r from-koperasi-secondary to-koperasi-primary text-white px-6 py-2 rounded-lg">Pilih Aplikasi</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== ENDPOINT WEB APP GAS =====
+    const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxU3eW7Ve0S_qysuydgNIKGf0ZnzHkPHyDSpfL0qCP_-BhgOT_8PKbFmnPPed1MmKYn/exec';
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ duration: 700, once: true });
+
+      // Login events
+      document.getElementById('togglePassword').addEventListener('click', () => {
+        const i = document.getElementById('password');
+        const eye = document.getElementById('eyeIcon');
+        if (i.type === 'password') { i.type = 'text'; eye.classList.replace('fa-eye','fa-eye-slash'); }
+        else { i.type = 'password'; eye.classList.replace('fa-eye-slash','fa-eye'); }
+      });
+      document.getElementById('loginForm').addEventListener('submit', (e) => { e.preventDefault(); handleLogin(); });
+
+      // Switch views
+      document.getElementById('forgotPasswordLink').addEventListener('click', (e) => { e.preventDefault(); showForgot(); });
+      document.getElementById('backToLoginButton').addEventListener('click', () => showLogin());
+      document.getElementById('showSignupLink').addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+      document.getElementById('backToLoginFromSignup').addEventListener('click', () => showLogin());
+
+      // Forgot handlers
+      document.getElementById('sendTokenButton').addEventListener('click', (e) => { e.preventDefault(); handleRequestToken(); });
+      document.getElementById('applyNewPasswordButton').addEventListener('click', (e) => { e.preventDefault(); handleApplyNewPassword(); });
+
+      // Signup handlers
+      document.getElementById('signupForm').addEventListener('submit', (e) => { e.preventDefault(); handleSignup(); });
+      document.getElementById('toggleSuPass').addEventListener('click', () => toggleVisibility('su_password','suEye1'));
+      document.getElementById('toggleSuPass2').addEventListener('click', () => toggleVisibility('su_confirm','suEye2'));
+
+      // Realtime check username (debounced)
+      const suUser = document.getElementById('su_username');
+      suUser.addEventListener('input', debounce(checkUsername, 400));
+
+      checkLoginStatus();
+    });
+
+    // ===== UI HELPERS =====
+    function showError(msg) {
+      const el = document.getElementById('errorMessage');
+      document.getElementById('errorText').textContent = msg || 'Terjadi kesalahan.';
+      el.style.display = 'block';
+      setTimeout(()=> el.style.display = 'none', 5000);
+    }
+    function showSuccess(msg) {
+      const el = document.getElementById('successMessage');
+      document.getElementById('successText').textContent = msg || 'Berhasil.';
+      el.style.display = 'block';
+      setTimeout(()=> el.style.display = 'none', 5000);
+    }
+    function toggleVisibility(inputId, eyeId){
+      const i = document.getElementById(inputId), eye = document.getElementById(eyeId);
+      if (i.type === 'password'){ i.type='text'; eye.classList.replace('fa-eye','fa-eye-slash'); }
+      else { i.type='password'; eye.classList.replace('fa-eye-slash','fa-eye'); }
+    }
+    function debounce(fn, delay){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), delay); } }
+
+    // ===== SESSION =====
+    function checkLoginStatus() {
+      const ok = localStorage.getItem('isLoggedIn') === 'true';
+      const exp = localStorage.getItem('loginExpiration');
+      if (ok && exp && Date.now() > Date.parse(exp)) logout();
+      if (localStorage.getItem('isLoggedIn') === 'true') showMain(); else showLogin();
+    }
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('username');
+      localStorage.removeItem('token');
+      localStorage.removeItem('loginExpiration');
+      showLogin();
+    }
+
+    // ===== VIEW SWITCH =====
+    function showForgot(){
+      hideAllForms();
+      document.getElementById('forgotPasswordForm').classList.remove('hidden');
+    }
+    function showSignup(){
+      hideAllForms();
+      document.getElementById('signupForm').classList.remove('hidden');
+    }
+    function showLogin(){
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('mainSelectionScreen').classList.add('hidden');
+      hideAllForms();
+      document.getElementById('loginForm').classList.remove('hidden');
+    }
+    function showMain(){
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainSelectionScreen').classList.remove('hidden');
+    }
+    function hideAllForms(){
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('forgotPasswordForm').classList.add('hidden');
+      document.getElementById('errorMessage').style.display='none';
+      document.getElementById('successMessage').style.display='none';
+    }
+
+    function showApplication(appType) {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        showError('Silakan login terlebih dahulu.');
+        showLogin();
+        return;
+      }
+      if (appType === 'hp') location.href = 'aplikasi_hp.html';
+      else if (appType === 'seragam') location.href = 'aplikasi_seragam.html';
+    }
+    window.showApplication = showApplication;
+    window.logout = logout;
+
+    // ===== LOGIN =====
+    async function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if (!username || !password) return showError('Username dan password harus diisi');
+
+      const btn = document.getElementById('loginButton'),
+            txt = document.getElementById('loginButtonText'),
+            sp  = document.getElementById('loginButtonSpinner');
+      btn.disabled = true; txt.textContent='Memproses...'; sp.classList.remove('hidden');
+
+      try {
+        const res = await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({ action: 'login', username, password })
         });
-        
-        // Main navigation functions
-        function showApplication(appType) {
-            if (appType === 'hp') {
-                window.location.href = 'aplikasi_hp.html';
-            } else if (appType === 'seragam') {
-                window.location.href = 'aplikasi_seragam.html';
-            }
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        if (data.ok) {
+          localStorage.setItem('isLoggedIn','true');
+          localStorage.setItem('username', data.username || username);
+          if (data.token) localStorage.setItem('token', data.token);
+          const expiration = new Date();
+          expiration.setDate(expiration.getDate() + (document.getElementById('remember-me').checked ? 30 : 1));
+          localStorage.setItem('loginExpiration', expiration.toISOString());
+          showMain();
+        } else showError(data.error || 'Login gagal');
+      } catch(e){ console.error(e); showError('Koneksi gagal. Coba lagi.'); }
+      finally { btn.disabled=false; txt.textContent='Masuk'; sp.classList.add('hidden'); }
+    }
+
+    // ===== SIGNUP =====
+    async function checkUsername() {
+      const badge = document.getElementById('usernameBadge');
+      const username = document.getElementById('su_username').value.trim();
+      if (!username) {
+        badge.className = 'absolute right-2 top-1/2 -translate-y-1/2 badge bg-gray-100 text-gray-600 border border-gray-200';
+        badge.innerHTML = '<i class="fa-regular fa-circle"></i> Cek';
+        return;
+      }
+      try {
+        const res = await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({ action: 'checkusername', username })
+        });
+        if (!res.ok) return; // silently ignore if endpoint not present
+        const data = await res.json();
+        if (data.ok && typeof data.available === 'boolean') {
+          if (data.available) {
+            badge.className = 'absolute right-2 top-1/2 -translate-y-1/2 badge bg-green-100 text-green-700 border border-green-200';
+            badge.innerHTML = '<i class="fa-solid fa-check"></i> Tersedia';
+          } else {
+            badge.className = 'absolute right-2 top-1/2 -translate-y-1/2 badge bg-red-100 text-red-700 border border-red-200';
+            badge.innerHTML = '<i class="fa-solid fa-xmark"></i> Dipakai';
+          }
         }
-    </script>
+      } catch(_) { /* ignore */ }
+    }
+
+    async function handleSignup() {
+      const u = document.getElementById('su_username').value.trim();
+      const e = document.getElementById('su_email').value.trim();
+      const p = document.getElementById('su_password').value;
+      const c = document.getElementById('su_confirm').value;
+
+      if (!u) return showError('Username wajib diisi');
+      if (u.length < 3) return showError('Panjang username minimal 3 karakter');
+      if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return showError('Format email tidak valid');
+      if (!p || p.length < 6) return showError('Password minimal 6 karakter');
+      if (p !== c) return showError('Konfirmasi password tidak sama');
+
+      const btn = document.getElementById('signupButton'),
+            txt = document.getElementById('signupText'),
+            sp  = document.getElementById('signupSpinner');
+      btn.disabled = true; txt.textContent='Memproses...'; sp.classList.remove('hidden');
+
+      try {
+        const res = await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({ action: 'signup', username: u, password: p, email: e })
+        });
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        if (data.ok) {
+          showSuccess('Akun berhasil dibuat. Silakan login.');
+          // reset form & kembali ke login
+          document.getElementById('signupForm').reset();
+          // reset badge
+          const badge = document.getElementById('usernameBadge');
+          badge.className = 'absolute right-2 top-1/2 -translate-y-1/2 badge bg-gray-100 text-gray-600 border border-gray-200';
+          badge.innerHTML = '<i class="fa-regular fa-circle"></i> Cek';
+          setTimeout(()=> showLogin(), 1200);
+        } else {
+          showError(data.error || 'Gagal membuat akun');
+        }
+      } catch(e){ console.error(e); showError('Koneksi gagal. Coba lagi.'); }
+      finally { btn.disabled=false; txt.textContent='Daftar'; sp.classList.add('hidden'); }
+    }
+
+    // ===== FORGOT PASSWORD =====
+    async function handleRequestToken() {
+      const username = document.getElementById('fp_username').value.trim();
+      const email = document.getElementById('fp_email').value.trim();
+      if (!username || !email) return showError('Username dan email harus diisi');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Format email tidak valid');
+
+      const btn = document.getElementById('sendTokenButton'),
+            txt = document.getElementById('sendTokenText'),
+            sp  = document.getElementById('sendTokenSpinner');
+      btn.disabled = true; txt.textContent='Mengirim...'; sp.classList.remove('hidden');
+
+      try {
+        const res = await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({ action: 'requestreset', username, email })
+        });
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        if (data.ok) showSuccess('Token telah dikirim ke email. Silakan cek kotak masuk.');
+        else showError(data.error || 'Gagal mengirim token');
+      } catch(e){ console.error(e); showError('Koneksi gagal. Coba lagi.'); }
+      finally { btn.disabled=false; txt.textContent='Kirim Token'; sp.classList.add('hidden'); }
+    }
+
+    async function handleApplyNewPassword() {
+      const token = document.getElementById('fp_token').value.trim();
+      const p1 = document.getElementById('fp_new1').value;
+      const p2 = document.getElementById('fp_new2').value;
+      if (!token) return showError('Token wajib diisi');
+      if (!/^\d+$/.test(token)) return showError('Token harus berupa angka');
+      if (!p1 || p1.length < 6) return showError('Password baru minimal 6 karakter');
+      if (p1 !== p2) return showError('Konfirmasi password tidak sama');
+
+      const btn = document.getElementById('applyNewPasswordButton'),
+            txt = document.getElementById('applyText'),
+            sp  = document.getElementById('applySpinner');
+      btn.disabled = true; txt.textContent='Memproses...'; sp.classList.remove('hidden');
+
+      try {
+        const res = await fetch(GAS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({ action: 'setnewpassword', token, newPassword: p1 })
+        });
+        if (!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        if (data.ok) {
+          showSuccess('Password berhasil diubah. Silakan login.');
+          document.getElementById('forgotPasswordForm').reset();
+          setTimeout(()=>showLogin(), 1200);
+        } else showError(data.error || 'Gagal mengubah password');
+      } catch(e){ console.error(e); showError('Koneksi gagal. Coba lagi.'); }
+      finally { btn.disabled=false; txt.textContent='Ubah Password'; sp.classList.add('hidden'); }
+    }
+  </script>
 </body>
 </html>
