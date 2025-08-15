@@ -1,693 +1,1242 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Aplikasi HP - Koperasi Sigap Nusantara</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- AOS & Fonts & Icons -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- jQuery + Select2 + jQuery UI (datepicker) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <style>
-    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#fff,#fffef0)}
-    .section-hidden{display:none}
-    .date-input{position:relative}
-    .date-input .ui-datepicker-trigger{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#d4af37;cursor:pointer;z-index:10}
-    .select2-container{width:100%!important}
-    .warning-box{background-color:#fef3c7;border-left:4px solid #f59e0b;padding:12px;margin-bottom:16px;border-radius:.375rem}
-    .loan-item{padding:8px 12px;margin-bottom:8px;background-color:#f9fafb;border-radius:6px;border-left:3px solid #f59e0b}
-    .loan-item:last-child{margin-bottom:0}
-    .ui-datepicker-trigger{padding:8px;background:none;border:none;cursor:pointer;color:#d4af37;font-size:16px;transition:color .2s}
-    .ui-datepicker-trigger:hover{color:#b8941f}
-    .ui-datepicker-trigger:focus{outline:none;box-shadow:0 0 0 2px rgba(212,175,55,.3);border-radius:4px}
-    .date-input input[readonly]{background-color:#f9fafb;cursor:pointer}
-    .whatsapp-link { color: #25D366; text-decoration: none; }
-    .whatsapp-link:hover { text-decoration: underline; }
-    .masa-cicilan-active { color: #f59e0b; font-weight: 600; }
-    .masa-cicilan-complete { color: #10b981; font-weight: 600; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Aplikasi Seragam - Koperasi Sigap Nusantara</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'gold': {
+                            50: '#fffef0',
+                            100: '#fef9e7',
+                            200: '#f9e79f',
+                            300: '#f4d03f',
+                            400: '#f1c40f',
+                            500: '#d4af37', // Warna emas utama
+                            600: '#b8941f', // Emas gelap
+                            700: '#917712',
+                            800: '#745c0a',
+                            900: '#5a4608',
+                        },
+                        'primary': '#d4af37',        // Warna emas utama
+                        'primary-dark': '#b8941f',   // Emas gelap untuk hover
+                        'primary-light': '#f9e79f',  // Emas muda untuk background
+                        'accent': '#f4d03f',         // Emas lembut untuk gradien
+                        'koperasi-primary': '#2C3E50', // Abu tua (tetap untuk teks utama)
+                        'koperasi-secondary': '#d4af37', // Emas sebagai aksen
+                        'white': '#ffffff',
+                        'gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    },
+                    boxShadow: {
+                        'light': '0 4px 12px rgba(212, 175, 55, 0.1)',
+                        'inner-light': 'inset 0 1px 3px rgba(0, 0, 0, 0.1)'
+                    },
+                    animation: {
+                        'float-slow': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #fffef0 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2C3E50;
+        }
+        /* Background dekoratif emas lembut */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        /* Efek kaca (glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        /* Tombol animasi dengan gradien emas */
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: white;
+        }
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.6s;
+        }
+        .btn-animated:hover::before {
+            left: 100%;
+        }
+        .btn-animated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        /* Kartu pilihan utama */
+        .selection-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+        .selection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        .selection-card .icon-container {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            transition: all 0.3s ease;
+        }
+        .selection-card:hover .icon-container {
+            background: linear-gradient(135deg, '#b8941f', '#917712');
+            transform: scale(1.1) rotate(-5deg);
+        }
+        /* Notification styles */
+        .notification-show {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Loading overlay */
+        .loading-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .loading-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        /* Input improvements */
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid #E5E7EB;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+        .form-input:focus {
+            border-color: '#d4af37';
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        /* Button improvements */
+        .btn-gradient {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, '#b8941f', '#917712');
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+        .btn-gradient:active {
+            transform: translateY(0);
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);
+        }
+        .btn-back:hover {
+            background: linear-gradient(135deg, '#4b5563', '#374151');
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
+        }
+        /* Koperasi theme colors */
+        .bg-koperasi-primary {
+            background-color: '#2C3E50';
+        }
+        .bg-koperasi-secondary {
+            background-color: '#d4af37';
+        }
+        .text-koperasi-primary {
+            color: '#2C3E50';
+        }
+        .text-koperasi-secondary {
+            color: '#d4af37';
+        }
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #outputSection,
+            #outputSection * {
+                visibility: visible;
+            }
+            #outputSection {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .selection-card {
+                padding: 1.5rem;
+            }
+            .selection-card h3 {
+                font-size: 1.125rem;
+            }
+            .glass-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            .grid-cols-1 {
+                gap: 1rem;
+            }
+            .md\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            .text-4xl,
+            .text-3xl {
+                font-size: 1.75rem;
+                line-height: 1.2;
+            }
+            .text-2xl {
+                font-size: 1.375rem;
+            }
+            .py-10 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: '#f1f1f1';
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: '#d4af37';
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: '#b8941f';
+        }
+        /* Animation for elements */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        /* Section visibility */
+        .section-hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body class="font-poppins">
-  <!-- Loading Spinner -->
-  <div id="loadingSpinner" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white/95 p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500 mx-auto mb-4"></div>
-      <p class="text-lg font-semibold text-gray-800">Memproses...</p>
-      <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
-    </div>
-  </div>
-  <!-- Toast -->
-  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
-  <!-- Modal Konfirmasi -->
-  <div id="confirmModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
-    <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>Konfirmasi</h3>
-        <button onclick="closeConfirmModal()" class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full"><i class="fas fa-times text-xl"></i></button>
-      </div>
-      <div class="mb-6">
-        <p class="text-gray-700 mb-4">NPK ini masih memiliki angsuran HP yang aktif. Apakah Anda yakin ingin melanjutkan pengajuan?</p>
-        <div id="activeLoansInfo" class="bg-yellow-50 p-3 rounded-lg text-sm text-gray-700 max-h-60 overflow-y-auto"></div>
-      </div>
-      <div class="flex justify-end gap-3 pt-4">
-        <button type="button" onclick="closeConfirmModal()" class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Batal</button>
-        <button type="button" onclick="confirmProceed()" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-medium">Lanjutkan</button>
-      </div>
-    </div>
-  </div>
-  <!-- Modal Ubah Data (tanpa input Nama & Instalasi) -->
-  <div id="statusModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
-    <div class="bg-white/95 rounded-2xl shadow-2xl p-8 w-full max-w-md" data-aos="fade-up">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-edit text-yellow-500 mr-2"></i>Ubah Data HP</h3>
-        <button onclick="closeStatusModal()" class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full"><i class="fas fa-times text-xl"></i></button>
-      </div>
-      <form id="statusForm" class="space-y-4">
-        <input type="hidden" id="statusId">
-        <input type="hidden" id="statusRowNumber">
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">NPK:</label>
-          <input type="text" id="statusNpk" readonly class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl font-mono">
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">No. Telepon:</label>
-          <input type="text" id="statusNotelp" readonly class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl">
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Tipe HP:</label>
-          <input type="text" id="statusTipeHp" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Alamat:</label>
-          <textarea id="statusAlamat" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl"></textarea>
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Keterangan:</label>
-          <textarea id="statusKeterangan" rows="2" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl"></textarea>
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Tanggal:</label>
-          <div class="date-input">
-            <input type="text" id="statusTanggal" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl" placeholder="dd/mm/yyyy" readonly>
-            <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
-          </div>
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Cicilan:</label>
-          <input type="text" id="statusCicilan" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">Status Baru:</label>
-          <select id="newStatus" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
-            <option value="">-- Pilih Status --</option>
-            <option value="VERIFIKASI">VERIFIKASI</option>
-            <option value="OK">OK</option>
-            <option value="NO ACC">NO ACC</option>
-            <option value="CANCEL">CANCEL</option>
-          </select>
-        </div>
-        <div class="flex justify-end gap-3 pt-4">
-          <button type="button" onclick="closeStatusModal()" class="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Batal</button>
-          <button type="submit" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-medium"><i class="fas fa-save mr-2"></i>Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
-    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-800"><i class="fas fa-mobile-alt text-yellow-500 mr-3"></i>Aplikasi HP Karyawan</h2>
-      <a href="index.html" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-home mr-2"></i>Menu Utama</a>
-    </div>
-    <!-- Menu -->
-    <div id="menuSelection" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
-      <div onclick="showInputSection()" class="p-6 rounded-xl bg-white border hover:shadow cursor-pointer">
-        <div class="w-16 h-16 rounded-full bg-yellow-500 text-white flex items-center justify-center mb-3"><i class="fas fa-plus-circle text-3xl"></i></div>
-        <h3 class="text-xl font-bold text-gray-800 mb-1">Input Data HP</h3>
-        <p class="text-gray-600">Menambahkan data HP karyawan</p>
-      </div>
-      <div onclick="showSearchSection()" class="p-6 rounded-xl bg-white border hover:shadow cursor-pointer">
-        <div class="w-16 h-16 rounded-full bg-yellow-500 text-white flex items-center justify-center mb-3"><i class="fas fa-search text-3xl"></i></div>
-        <h3 class="text-xl font-bold text-gray-800 mb-1">Cari Data by NPK</h3>
-        <p class="text-gray-600">Melihat riwayat berdasarkan NPK</p>
-      </div>
-    </div>
-    <!-- Input -->
-    <section id="inputSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold text-slate-800">Input Data Baru</h2>
-        <button onclick="backToMenu()" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
-      </div>
-      <div id="warningContainer" class="warning-box hidden">
-        <div class="flex items-start">
-          <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-2"></i>
-          <div>
-            <p class="font-medium text-yellow-800">Peringatan</p>
-            <p id="warningMessage" class="text-yellow-700 text-sm"></p>
-            <div id="activeLoansList" class="mt-2 space-y-2"></div>
-          </div>
-        </div>
-      </div>
-      <form id="formInput" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
-          <div class="date-input">
-            <input id="inTanggal" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="dd/mm/yyyy" readonly required>
-            <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
-          <input id="inNpk" type="text" class="w-full border rounded-xl px-3 py-2" required>
-          <p id="npkWarning" class="text-xs text-rose-600 mt-1 hidden"></p>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">No. Telp</label>
-          <input id="inNotelp" type="tel" class="w-full border rounded-xl px-3 py-2" placeholder="08xxxxxxxxxx">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">Cicilan</label>
-          <input id="inCicilan" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Contoh: 12x / 500.000">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">Tipe HP</label>
-          <select id="inTipehp" class="w-full border rounded-xl px-3 py-2"></select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">Status</label>
-          <select id="inStatus" class="w-full border rounded-xl px-3 py-2">
-            <option value="">- Pilih -</option>
-            <option>OK</option>
-            <option>CANCEL</option>
-            <option>NO ACC</option>
-            <option>VERIFIKASI</option>
-          </select>
-        </div>
-        <div class="md:col-span-3">
-          <label class="block text-sm font-medium text-slate-600 mb-1">Alamat Kirim</label>
-          <input id="inAlamat" type="text" class="w-full border rounded-xl px-3 py-2" placeholder="Alamat lengkap">
-        </div>
-        <div class="md:col-span-3">
-          <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
-          <textarea id="inKet" rows="2" class="w-full border rounded-xl px-3 py-2" placeholder="Catatan tambahan"></textarea>
-        </div>
-        <div class="md:col-span-3 flex items-center">
-          <input type="checkbox" id="ignoreActiveLoan" class="mr-2 h-5 w-5 text-yellow-600 rounded focus:ring-yellow-500">
-          <label for="ignoreActiveLoan" class="text-sm font-medium text-slate-700">Lanjutkan meskipun ada angsuran aktif</label>
-        </div>
-        <div class="md:col-span-3 flex gap-2 items-center">
-          <button id="btnSimpan" type="submit" class="px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed">Simpan</button>
-          <button type="button" onclick="resetForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
-          <span id="msgInput" class="text-sm text-slate-500"></span>
-        </div>
-      </form>
-    </section>
-    <!-- Cari -->
-    <section id="searchSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold text-slate-800">Cari Data by NPK</h2>
-        <button onclick="backToMenu()" class="px-6 py-3 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
-      </div>
-      <form id="formCari" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-        <div>
-          <label class="block text-sm font-medium text-slate-600 mb-1">NPK</label>
-          <input id="npkCari" type="text" class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 outline-none" placeholder="Masukkan NPK..." required>
-        </div>
-        <div class="md:col-span-2 flex gap-2">
-          <button type="submit" class="px-4 py-2 rounded-xl bg-yellow-500 text-white hover:bg-yellow-600">Cari</button>
-          <button type="button" id="btnReset" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50">Reset</button>
-          <button type="button" onclick="refreshMasaCicilan()" class="px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600">
-            <i class="fas fa-sync-alt mr-1"></i> Refresh Masa Cicilan
-          </button>
-        </div>
-      </form>
-      <p id="infoCari" class="text-sm text-slate-500 mt-2 hidden"></p>
-    </section>
-    <!-- Hasil -->
-    <section id="resultSection" class="bg-white rounded-2xl shadow p-4 md:p-6 mb-6 section-hidden">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xl font-semibold text-slate-800">Hasil Pencarian</h2>
-        <div class="text-sm text-slate-500" id="countRows"></div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="min-w-full border border-slate-200 rounded-xl overflow-hidden" id="tblData">
-          <thead class="bg-slate-100 text-slate-700">
-            <tr>
-              <th class="px-2 py-1">#</th>
-              <th class="px-2 py-1">ID</th>
-              <th class="px-2 py-1">Tanggal</th>
-              <th class="px-2 py-1">NPK</th>
-              <th class="px-2 py-1">Nama</th>
-              <th class="px-2 py-1">No. Telp</th>
-              <th class="px-2 py-1">Instalasi</th>
-              <th class="px-2 py-1">Cicilan</th>
-              <th class="px-2 py-1">Tipe HP</th>
-              <th class="px-2 py-1">Alamat Kirim</th>
-              <th class="px-2 py-1">Keterangan</th>
-              <th class="px-2 py-1">Status</th>
-              <th class="px-2 py-1">Masa Cicilan</th>
-              <th class="px-2 py-1">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbody" class="divide-y"></tbody>
-        </table>
-      </div>
-    </section>
-  </div>
-  <script>
-    // ===== ENDPOINT (DISAMAKAN DENGAN LINK WEB-APP TERBARU) =====
-    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHylq0kuwja-7FQgHwYas-bh9GUUKChEPZ6stylR37gBWtqyFDKe7OsZCov2aoUmPi/exec';
-    // ===== Toast & Spinner =====
-    const toast = (msg, ok=true) => {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-yellow-600 text-white" : "bg-rose-600 text-white");
-      t.style.opacity = 1; t.style.display = 'block';
-      setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 2000);
-    };
-    const showSpinner = ()=>document.getElementById('loadingSpinner').classList.remove('hidden');
-    const hideSpinner = ()=>document.getElementById('loadingSpinner').classList.add('hidden');
-    const esc = s => (s ?? "").toString();
-    // ===== Tanggal Helpers (DD/MM/YYYY) =====
-    function fmtDDMMYYYY(d){
-      const dd=String(d.getDate()).padStart(2,'0');
-      const mm=String(d.getMonth()+1).padStart(2,'0');
-      const yy=d.getFullYear();
-      return `${dd}/${mm}/${yy}`;
-    }
-    function formatDateToDDMMYYYY(val){
-      if(!val) return "";
-      if(typeof val==='string' && val.includes('/')) {
-        const [d,m,y]=val.split('/');
-        if(d&&m&&y) return `${d.padStart(2,'0')}/${m.padStart(2,'0')}/${y}`;
-      }
-      const d=new Date(val);
-      if(isNaN(d)) return "";
-      return fmtDDMMYYYY(d);
-    }
-    function convertDateForSorting(dateStr) {
-      if (!dateStr) return "";
-      const parts = dateStr.split('/');
-      if (parts.length !== 3) return dateStr;
-      return parts[2] + parts[1] + parts[0]; // YYYYMMDD
-    }
-    // ===== Katalog & Status =====
-    const tipeHpOptions = ["", "VIVO Y29 6/128", "VIVO Y29 8/128", "VIVO Y29 8/256", "Y19S PRO 4/64 GB", "Y19S PRO 4/128 GB", "Y19S PRO 6/128 GB", "REDMI 14C 6/128", "REDMI 14C 8/256", "REDMI NOTE 14 8/128", "REDMI NOTE 14 8/256", "REDMI NOTE 14 8/256 5G", "REDMI NOTE 14 12/512 5G", "REDMI 13 8/128", "REDMI 13 8/256", "REDMI POCO PAD 8/256", "OPPO A60 8/256", "OPPO A3X 6/128", "REALME C75 8/128", "REALME C75 8/256", "REALME NOTE 60 6/128", "SAMSUNG A06 4/64", "SAMSUNG A06 4/128", "SAMSUNG A06 6/128", "SAMSUNG A16 8/128", "SAMSUNG A16 8/256", "SAMSUNG A16 8/256 5G", "SMART 10 4/128 GB", "SMART 10 PLUS 8/128 GB", "HOT 60i 8/256 GB", "HOT 60 PRO 8/256 GB", "INFINIX HOT 50 PRO+ 8/256", "TECNO SPARK GO 1 4/128", "POVA 7 8/128 GB", "POVA 7 8/256 GB", "CAMON 40 8/256 GB", "ADVAN TAB VX LITE 6/128GB"];
-    const statusList = ["", "OK", "CANCEL", "NO ACC", "VERIFIKASI"];
-    // ===== Nav Section =====
-    function showInputSection(){
-      document.getElementById('menuSelection').classList.add('section-hidden');
-      document.getElementById('inputSection').classList.remove('section-hidden');
-      document.getElementById('searchSection').classList.add('section-hidden');
-      document.getElementById('resultSection').classList.add('section-hidden');
-    }
-    function showSearchSection(){
-      document.getElementById('menuSelection').classList.add('section-hidden');
-      document.getElementById('inputSection').classList.add('section-hidden');
-      document.getElementById('searchSection').classList.remove('section-hidden');
-      document.getElementById('resultSection').classList.remove('section-hidden');
-    }
-    function backToMenu(){
-      document.getElementById('menuSelection').classList.remove('section-hidden');
-      document.getElementById('inputSection').classList.add('section-hidden');
-      document.getElementById('searchSection').classList.add('section-hidden');
-      document.getElementById('resultSection').classList.add('hidden');
-    }
-    function resetForm(){
-      document.getElementById('formInput').reset();
-      $("#inTanggal").val(fmtDDMMYYYY(new Date()));
-      $('#inTipehp').val(null).trigger('change');
-      document.getElementById('msgInput').textContent='';
-      document.getElementById('npkWarning').classList.add('hidden');
-      document.getElementById('npkWarning').textContent='';
-      document.getElementById('warningContainer').classList.add('hidden');
-      document.getElementById('btnSimpan').disabled=false;
-    }
-    function closeStatusModal(){ document.getElementById('statusModal').classList.add('hidden'); }
-    function closeConfirmModal(){ document.getElementById('confirmModal').classList.add('hidden'); }
-    function confirmProceed(){
-      document.getElementById('confirmModal').classList.add('hidden');
-      document.getElementById('ignoreActiveLoan').checked = true;
-      document.getElementById('btnSimpan').disabled = false;
-      document.getElementById('btnSimpan').click();
-    }
-    // ===== Deteksi aktif: perhatikan status =====
-    function isMasaCicilanAktif(val, status){
-      if(!val) return false;
-      const s = String(val).trim().toLowerCase();
-      if(!s) return false;
-      const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
-      if (m) {
-        const a = parseInt(m[1],10), b = parseInt(m[2],10);
-        if (a === b && String(status).toUpperCase() === 'OK') return false;
-      }
-      if (s.includes('lunas') || s.includes('selesai')) return false;
-      const num = parseInt(s.replace(/[^\d]/g,''),10);
-      if (!isNaN(num)) return num > 0;
-      if (s.includes('bulan')) return true;
-      return false;
-    }
-    function isCicilanAktif(val, status){
-      if(!val) return false;
-      const s = String(val).trim().toLowerCase();
-      const m = s.match(/^(\d+)\s*\/\s*(\d+)/);
-      if (m) {
-        const a = parseInt(m[1],10), b = parseInt(m[2],10);
-        if (a === b && String(status).toUpperCase() === 'OK') return false;
-        if (a < b) return true;
-      }
-      return s.includes('x') && !s.includes('lunas');
-    }
-    // ===== Cek NPK pada input (otomatis) =====
-    let npkCheckTimer = null;
-    let activeLoansData = [];
-    async function cekNpkSaatInput(){
-      const npk = document.getElementById('inNpk').value.trim();
-      const warn = document.getElementById('npkWarning');
-      const warningContainer = document.getElementById('warningContainer');
-      const warningMessage = document.getElementById('warningMessage');
-      const activeLoansList = document.getElementById('activeLoansList');
-      const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
-      const btn = document.getElementById('btnSimpan');
-      warn.classList.add('hidden');
-      warn.textContent='';
-      warningContainer.classList.add('hidden');
-      activeLoansList.innerHTML = '';
-      btn.disabled=false;
-      if(!npk) return;
-      try{
-        const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
-        const res = await fetch(url, {method:'GET'});
-        const json = await res.json();
-        if(json.status!=='success'){ return; }
-        const data = Array.isArray(json.data)?json.data:[];
-        const aktif = data.filter(it=>{
-          const st = String(it.status||'').toUpperCase();
-          const statusAktif = (st==='OK'||st==='VERIFIKASI');
-          const cicilanAktif = isCicilanAktif(it.cicilan, it.status);
-          const masaAktif = isMasaCicilanAktif(it.masaCicilan, it.status);
-          return statusAktif && (cicilanAktif || masaAktif);
-        });
-        aktif.sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
-        activeLoansData = aktif;
-        if(aktif.length && !ignoreCheckbox.checked){
-          btn.disabled = true;
-          const loanDetails = aktif.map((it,i)=>`
-            <div class="loan-item">
-              <div class="font-medium">${i+1}. Tipe: ${esc(it.tipehp)||'-'}</div>
-              <div class="text-xs mt-1">Cicilan: ${esc(it.cicilan)||'-'}, Masa Angsuran: ${esc(it.masaCicilan)||'-'}, Status: ${esc(it.status)||'-'}</div>
-            </div>`).join('');
-          activeLoansList.innerHTML = loanDetails;
-          warningMessage.textContent = `NPK ini masih memiliki ${aktif.length} angsuran HP yang aktif. Centang opsi "Lanjutkan meskipun ada angsuran aktif" jika ingin melanjutkan pengajuan.`;
-          warningContainer.classList.remove('hidden');
-          toast('Tidak bisa pengajuan: masih ada angsuran HP yang belum selesai', false);
-        }
-      }catch(err){
-        console.warn('Cek NPK gagal:', err);
-      }
-    }
-    // ===== Submit INPUT =====
-    async function handleFormSubmit(e){
-      e.preventDefault();
-      const btn = document.getElementById('btnSimpan');
-      const ignoreCheckbox = document.getElementById('ignoreActiveLoan');
-      if(btn.disabled && !ignoreCheckbox.checked){
-        const sortedLoans = [...activeLoansData].sort((a,b)=>convertDateForSorting(a.tanggal).localeCompare(convertDateForSorting(b.tanggal)));
-        document.getElementById('activeLoansInfo').innerHTML = sortedLoans.map((it,i)=>`
-          <div class="loan-item">
-            <div class="font-medium">${i+1}. Tipe: ${esc(it.tipehp)||'-'}</div>
-            <div class="text-xs mt-1">Cicilan: ${esc(it.cicilan)||'-'}, Masa: ${esc(it.masaCicilan)||'-'}, Status: ${esc(it.status)||'-'}</div>
-          </div>`).join('');
-        document.getElementById('confirmModal').classList.remove('hidden');
-        return;
-      }
-      showSpinner();
-      const tanggal = formatDateToDDMMYYYY(document.getElementById('inTanggal').value);
-      const qs = new URLSearchParams({
-        tanggal,
-        npk: document.getElementById('inNpk').value.trim(),
-        notelp: document.getElementById('inNotelp').value.trim(),
-        cicilan: document.getElementById('inCicilan').value.trim(),
-        tipehp: $('#inTipehp').val() || '',
-        alamat: document.getElementById('inAlamat').value.trim(),
-        keterangan: document.getElementById('inKet').value.trim(),
-        status: document.getElementById('inStatus').value
-      });
-      if(!qs.get('tanggal') || !qs.get('npk')){
-        toast('Tanggal & NPK wajib diisi', false);
-        hideSpinner();
-        return;
-      }
-      if(!ignoreCheckbox.checked){
-        try{
-          const npk = qs.get('npk');
-          const chkRes = await fetch(`${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`, {method:'GET'});
-          const chkJson = await chkRes.json();
-          if(chkJson.status==='success'){
-            const data = chkJson.data||[];
-            const hasAktif = data.some(it=>{
-              const st = String(it.status||'').toUpperCase();
-              const statusAktif = (st==='OK'||st==='VERIFIKASI');
-              return statusAktif && (isCicilanAktif(it.cicilan, it.status) || isMasaCicilanAktif(it.masaCicilan, it.status));
-            });
-            if(hasAktif){
-              hideSpinner();
-              toast('Tidak bisa pengajuan: masih ada angsuran HP yang belum selesai', false);
-              document.getElementById('btnSimpan').disabled = true;
-              const warn = document.getElementById('npkWarning');
-              warn.textContent = 'Masih ada angsuran aktif. Selesaikan terlebih dahulu.';
-              warn.classList.remove('hidden');
-              return;
-            }
-          }
-        }catch(err){
-          console.warn('Error checking active loans:', err);
-        }
-      }
-      try{
-        const res = await fetch(`${ENDPOINT}?${qs.toString()}`, {method:'GET'});
-        const json = await res.json();
-        const el = document.getElementById('msgInput');
-        if(json.status==='success'){
-          el.textContent='✓ Tersimpan';
-          el.className='text-sm text-emerald-600';
-          toast('Data baru tersimpan');
-          resetForm();
-        }else{
-          el.textContent='Gagal simpan: '+(json.message||'');
-          el.className='text-sm text-rose-600';
-          toast('Gagal simpan data', false);
-        }
-      }catch(err){
-        toast('Error simpan: '+err.message, false);
-      }
-      hideSpinner();
-    }
-    // ===== Refresh Masa Cicilan =====
-    async function refreshMasaCicilan() {
-      showSpinner();
-      try {
-        const res = await fetch(`${ENDPOINT}?action=refreshAll`, {method:'GET'});
-        const json = await res.json();
-        if(json.status === 'success') {
-          toast('Masa cicilan berhasil diperbarui');
-          const npk = document.getElementById('npkCari').value.trim();
-          if(npk) { await loadData(npk); }
-        } else {
-          toast('Gagal refresh masa cicilan: ' + (json.message || ''), false);
-        }
-      } catch(err) {
-        toast('Error refresh masa cicilan: ' + err.message, false);
-      }
-      hideSpinner();
-    }
-    // ===== Pencarian & Tabel =====
-    async function handleSearchSubmit(e){
-      e.preventDefault();
-      const npk = document.getElementById('npkCari').value.trim();
-      if(!npk){ toast('NPK wajib diisi', false); return; }
-      showSpinner();
-      await loadData(npk);
-      hideSpinner();
-    }
-    function handleSearchReset(){
-      document.getElementById('npkCari').value='';
-      document.getElementById('tbody').innerHTML='';
-      document.getElementById('countRows').textContent='';
-      document.getElementById('infoCari').classList.add('hidden');
-    }
-    async function loadData(npk){
-      try{
-        const url = `${ENDPOINT}?action=getData&npk=${encodeURIComponent(npk)}`;
-        const res = await fetch(url,{method:'GET'});
-        const json = await res.json();
-        if(json.status!=='success'){ toast(json.message||'Gagal ambil data', false); return; }
-        renderTable(json.data||[]);
-        document.getElementById('infoCari').classList.remove('hidden');
-        document.getElementById('infoCari').textContent=`Menampilkan data untuk NPK: ${npk}`;
-      }catch(err){ toast('Gagal memuat data: '+err.message,false); }
-    }
-    function renderTable(rows){
-      const tb=document.getElementById('tbody'); tb.innerHTML='';
-      document.getElementById('countRows').textContent=`${rows.length} baris`;
-      
-      // Urutkan data berdasarkan ID terkecil hingga terbesar
-      rows.sort((a, b) => {
-        const idA = parseInt(a.id, 10);
-        const idB = parseInt(b.id, 10);
-        if (!isNaN(idA) && !isNaN(idB)) {
-          return idA - idB;
-        }
-        // Fallback jika ID bukan angka
-        return a.id.localeCompare(b.id);
-      });
-      
-      rows.forEach((r,i)=>{
-        const tr=document.createElement('tr'); tr.className='hover:bg-slate-50';
-        const tanggalId=`tgl_${i}_${Date.now()}`; const tipeId=`tipe_${i}_${Date.now()}`; const statusId=`sts_${i}_${Date.now()}`;
-        const formattedDate=formatDateToDDMMYYYY(r.tanggal);
-        let notelpHtml = esc(r.notelp || '');
-        if (r.notelp_link) {
-          notelpHtml = `<a href="${r.notelp_link}" target="_blank" class="whatsapp-link">${esc(r.notelp || '')} <i class="fab fa-whatsapp"></i></a>`;
-        }
-        let masaCicilanHtml = esc(r.masaCicilan || '');
-        if (r.masaCicilan) {
-          if (r.masaCicilan.includes('LENGKAP') || r.masaCicilan.toLowerCase().includes('lunas')) {
-            masaCicilanHtml = `<span class="masa-cicilan-complete">${masaCicilanHtml}</span>`;
-          } else if (r.masaCicilan.includes('Sisa')) {
-            masaCicilanHtml = `<span class="masa-cicilan-active">${masaCicilanHtml}</span>`;
-          }
-        }
-        tr.innerHTML = `
-          <td class="px-2 py-1 text-sm text-slate-600">${i+1}</td>
-          <td class="px-2 py-1 text-sm">${esc(r.id)}</td>
-          <td class="px-2 py-1">
-            <div class="date-input">
-              <input type="text" id="${tanggalId}" class="border rounded px-2 py-1 w-32" value="${formattedDate}" placeholder="dd/mm/yyyy" readonly>
-              <button type="button" class="ui-datepicker-trigger"><i class="fas fa-calendar-alt"></i></button>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 loading-overlay flex items-center justify-center z-50 hidden">
+        <div class="loading-content p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
+            <div
+                class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-koperasi-secondary mx-auto mb-4">
             </div>
-          </td>
-          <td class="px-2 py-1 text-sm">${esc(r.npk)}</td>
-          <td class="px-2 py-1 text-sm">${esc(r.nama || '')}</td>
-          <td class="px-2 py-1">${notelpHtml}</td>
-          <td class="px-2 py-1 text-sm">${esc(r.instalasi || '')}</td>
-          <td class="px-2 py-1"><input type="text" class="cicilanSel border rounded px-2 py-1 w-32" value="${esc(r.cicilan)}"></td>
-          <td class="px-2 py-1"><select id="${tipeId}" class="tipeSel border rounded px-2 py-1 w-44"></select></td>
-          <td class="px-2 py-1"><input type="text" class="alamatSel border rounded px-2 py-1 w-64" value="${esc(r.alamat)}"></td>
-          <td class="px-2 py-1"><input type="text" class="ketSel border rounded px-2 py-1 w-64" value="${esc(r.keterangan)}"></td>
-          <td class="px-2 py-1"><select id="${statusId}" class="statusSel border rounded px-2 py-1 w-40"></select></td>
-          <td class="px-2 py-1 text-sm">${masaCicilanHtml}</td>
-          <td class="px-2 py-1">
-            <button class="btnUpdate px-3 py-1 rounded bg-yellow-500 text-white hover:bg-yellow-600">Update</button>
-          </td>`;
-        document.getElementById('tbody').appendChild(tr);
-        // Datepicker untuk kolom tanggal (read-only di backend update)
-        $(`#${tanggalId}`).datepicker({
-          dateFormat:"dd/mm/yy",
-          changeMonth:true,
-          changeYear:true,
-          yearRange:"2020:2030",
-          showOn: "button",
-          buttonText: ""
+            <p class="text-lg font-semibold text-gray-800">Memproses...</p>
+            <p class="text-sm text-gray-600 mt-2">Harap tunggu sebentar</p>
+        </div>
+    </div>
+    <!-- Notification -->
+    <div id="notification"
+        class="fixed bottom-4 right-4 px-6 py-4 rounded-xl shadow-lg transform translate-y-16 transition-all duration-300 z-50 hidden max-w-sm opacity-0">
+        <div class="flex items-center">
+            <i id="notificationIcon" class="fas fa-check-circle mr-3 text-lg"></i>
+            <span id="notificationText" class="font-medium">Pesan notifikasi</span>
+        </div>
+    </div>
+    <!-- Seragam Application Screen -->
+    <div id="seragamApplication" class="container mx-auto max-w-6xl py-8 px-4 min-h-screen">
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <div class="flex items-center">
+                <button onclick="goBack()"
+                    class="mr-4 text-koperasi-secondary hover:text-koperasi-primary p-2 hover:bg-gray-100 rounded-full transition">
+                    <i class="fas fa-arrow-left text-2xl"></i>
+                </button>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-tshirt text-koperasi-secondary text-2xl mr-3"></i>
+                    Aplikasi Seragam Karyawan
+                </h2>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="goBack()"
+                    class="btn-animated px-6 py-3 rounded-xl font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+                <a href="index.html"
+                    class="btn-animated px-6 py-3 rounded-xl font-medium">
+                    <i class="fas fa-home mr-2"></i> Menu Utama
+                </a>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto" id="menuSection">
+            <button onclick="navigateTo('box-search')"
+                class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cari Data PO</h3>
+                <p class="text-gray-600">Mencari dan melihat data PO seragam</p>
+            </button>
+            
+            <button onclick="navigateTo('box-seragam')"
+                class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-file-invoice text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Input Data Seragam</h3>
+                <p class="text-gray-600">Menambahkan data seragam karyawan</p>
+            </button>
+            
+            <button onclick="navigateTo('box-po')"
+                class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-receipt text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Input PO_Seragam</h3>
+                <p class="text-gray-600">Menambahkan data PO seragam</p>
+            </button>
+            
+            <button onclick="navigateTo('box-surat')"
+                class="selection-card p-6 cursor-pointer">
+                <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-truck text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Buat Surat Jalan</h3>
+                <p class="text-gray-600">Membuat surat jalan pengiriman</p>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Seragam Form Container -->
+    <div class="container mx-auto max-w-4xl py-8 px-4 min-h-screen" id="formContainer" style="display: none;">
+        <!-- Form Cari Data PO -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8 mb-10 section-hidden" id="box-search" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-search text-koperasi-secondary text-2xl mr-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Cari Data PO</h2>
+                </div>
+                <button onclick="backToSeragamApplication()"
+                    class="btn-back px-4 py-2 rounded-xl text-white font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            
+            <div id="notif-search" class="text-center font-bold mb-6 p-3 rounded-lg"></div>
+            
+            <form id="form-search" class="space-y-6">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Nomor PO:</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-hashtag text-gray-400"></i>
+                        </div>
+                        <input type="text" name="search_po" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <button type="submit"
+                    class="w-full btn-animated btn-gradient text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-search mr-2"></i> Cari PO
+                </button>
+            </form>
+            
+            <div id="search-results" class="mt-8 space-y-4"></div>
+        </div>
+        
+        <!-- Form Data Seragam -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8 mb-10 section-hidden" id="box-seragam" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-file-invoice text-koperasi-secondary text-2xl mr-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Form Data Seragam</h2>
+                </div>
+                <button onclick="backToSeragamApplication()"
+                    class="btn-back px-4 py-2 rounded-xl text-white font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            
+            <div id="notif-seragam" class="text-center font-bold mb-6 p-3 rounded-lg"></div>
+            
+            <form id="form-seragam" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Tanggal:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-calendar-alt text-gray-400"></i>
+                            </div>
+                            <input type="date" name="tanggal" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">No. Invoice:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-file-invoice text-gray-400"></i>
+                            </div>
+                            <input type="text" name="no_inv" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">No. PO:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-receipt text-gray-400"></i>
+                            </div>
+                            <input type="text" name="no_po" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Nominal:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-money-bill-wave text-gray-400"></i>
+                            </div>
+                            <input type="number" name="nominal" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">User:</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" name="user" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <button type="submit"
+                    class="w-full btn-animated btn-gradient text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i> Kirim Data Seragam
+                </button>
+            </form>
+        </div>
+        
+        <!-- Form Data PO_Seragam -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8 mb-10 section-hidden" id="box-po" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-receipt text-koperasi-secondary text-2xl mr-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Form Data PO_Seragam</h2>
+                </div>
+                <button onclick="backToSeragamApplication()"
+                    class="btn-back px-4 py-2 rounded-xl text-white font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            
+            <div id="notif-po" class="text-center font-bold mb-6 p-3 rounded-lg"></div>
+            
+            <form id="form-po" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Tanggal:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-calendar-alt text-gray-400"></i>
+                            </div>
+                            <input type="date" name="tanggal" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">No. BK:</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-file-alt text-gray-400"></i>
+                            </div>
+                            <input type="text" name="no_bk" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">No. PO:</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-receipt text-gray-400"></i>
+                        </div>
+                        <input type="text" name="no_po" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <button type="submit"
+                    class="w-full btn-animated btn-gradient text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i> Kirim Data PO_Seragam
+                </button>
+            </form>
+        </div>
+        
+        <!-- Form Surat Jalan -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8 mb-10 section-hidden" id="box-surat" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-truck text-koperasi-secondary text-2xl mr-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Form Input Surat Jalan</h2>
+                </div>
+                <button onclick="backToSeragamApplication()"
+                    class="btn-back px-4 py-2 rounded-xl text-white font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </button>
+            </div>
+            
+            <form id="suratForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Nomor Surat</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-hashtag text-gray-400"></i>
+                            </div>
+                            <input type="text" name="nomor" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Tanggal</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-calendar-alt text-gray-400"></i>
+                            </div>
+                            <input type="date" name="tanggal" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">User</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" name="user" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">No. PO</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-receipt text-gray-400"></i>
+                        </div>
+                        <input type="text" name="no_po"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Jumlah Barang</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-boxes text-gray-400"></i>
+                        </div>
+                        <input type="number" name="jumlahBarang" min="1" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent shadow-sm form-input">
+                    </div>
+                </div>
+                
+                <button type="button" onclick="buatInputBarang()"
+                    class="w-full btn-animated bg-gradient-to-r from-koperasi-secondary to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-plus-circle mr-2"></i> Buat Form Barang
+                </button>
+                
+                <div id="barangInputs" class="space-y-6"></div>
+                
+                <button type="submit"
+                    class="w-full btn-animated btn-gradient text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-file-contract mr-2"></i> Tampilkan Surat Jalan
+                </button>
+            </form>
+            
+            <div class="text-center mt-8">
+                <button id="printButton" onclick="printSurat()"
+                    class="hidden btn-animated bg-gradient-to-r from-gold-600 to-gold-700 hover:from-gold-700 hover:to-gold-800 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300">
+                    <i class="fas fa-print mr-2"></i> Cetak / Simpan PDF
+                </button>
+            </div>
+            
+            <div id="outputSection" class="mt-10 p-6 bg-gold-50 rounded-xl border border-gold-200 section-hidden">
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-lg bg-slate-900 text-white text-sm shadow-lg"></div>
+    
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50
+            });
         });
-        // Isi & aktifkan Select2 tipe HP
-        const $tipe=$(`#${tipeId}`);
-        $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
-        $tipe.select2({tags:true,width:'100%',placeholder:"Pilih / ketik",createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
-        // Isi status
-        const selStatus=document.getElementById(statusId);
-        selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
-        // Tombol Update → hanya kirim field yang diizinkan backend
-        tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
-          showSpinner();
-          const payload = {
-            action:'updateData',
-            id: r.id,                    // update per-baris (tepat sasaran)
-            npk: r.npk,                  // kirim juga npk (aman)
-            cicilan: tr.querySelector('.cicilanSel').value,
-            tipehp: $tipe.val(),
-            alamat: tr.querySelector('.alamatSel').value,
-            keterangan: tr.querySelector('.ketSel').value,
-            status: selStatus.value
-          };
-          await doUpdate(payload);
-          hideSpinner();
-        });
-      });
-      if(rows.length===0){
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td colspan="14" class="px-3 py-6 text-center text-slate-500">Belum ada data</td>`;
-        document.getElementById('tbody').appendChild(tr);
-      }
-    }
-    async function doUpdate(payload){
-      try{
-        const fd = new URLSearchParams();
-        Object.entries(payload).forEach(([k,v])=>{ if(v!==undefined&&v!==null) fd.append(k,v); });
-        const res = await fetch(ENDPOINT,{
-          method:'POST',
-          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-          body:fd.toString()
-        });
-        const json = await res.json();
-        if(json.status==='success'){ toast('Berhasil update data'); }
-        else { toast(json.message||'Gagal update',false); }
-      }catch(err){ toast('Error update: '+err.message,false); }
-    }
-    // ===== Init =====
-    $(document).ready(function(){
-      // Datepicker input form
-      $("#inTanggal").datepicker({
-        dateFormat:"dd/mm/yy",
-        changeMonth:true,
-        changeYear:true,
-        yearRange:"2020:2030",
-        showOn: "button",
-        buttonText: ""
-      });
-      $("#inTanggal").val(fmtDDMMYYYY(new Date()));
-      // Select tipe HP di form input
-      $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
-      $('#inTipehp').select2({placeholder:"Pilih / ketik tipe HP",tags:true,width:'100%',createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
-      // Event form
-      document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
-      document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
-      document.getElementById('btnReset').addEventListener('click', handleSearchReset);
-      // Checkbox override active loan
-      document.getElementById('ignoreActiveLoan').addEventListener('change', function() {
-        if (this.checked) {
-          document.getElementById('btnSimpan').disabled = false;
-          document.getElementById('npkWarning').classList.add('hidden');
-          document.getElementById('warningContainer').classList.add('hidden');
-        } else {
-          cekNpkSaatInput();
+        
+        // Google Apps Script URL untuk Seragam
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwHzu6nSxQtWJTVSDV1iWZr9jrZZfiQegWjmdYPmG8sjLa9AGwNN4sM_IrZ2ershjkX/exec";
+        
+        // Utils
+        const toast = (msg, ok=true) => {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = "fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm shadow-lg " + (ok ? "bg-gold-500 text-white" : "bg-rose-600 text-white");
+            t.style.opacity = 1; t.style.display = 'block';
+            setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=>t.style.display='none', 300) }, 1800);
+        };
+        
+        // Enhanced notification function
+        function showNotification(message, isSuccess = true) {
+            const notification = $('#notification');
+            const icon = $('#notificationIcon');
+            const text = $('#notificationText');
+            
+            // Set notification content
+            text.text(message);
+            
+            // Set notification style based on success/error
+            if (isSuccess) {
+                notification.removeClass('bg-red-500 border-red-400').addClass('bg-green-500 border-green-400');
+                icon.removeClass('fa-times-circle fa-exclamation-triangle').addClass('fa-check-circle');
+            } else {
+                notification.removeClass('bg-green-500 border-green-400').addClass('bg-red-500 border-red-400');
+                icon.removeClass('fa-check-circle').addClass('fa-times-circle');
+            }
+            
+            // Show notification with animation
+            notification.removeClass('hidden').removeClass('translate-y-16').addClass('notification-show');
+            
+            // Hide notification after 5 seconds
+            setTimeout(() => {
+                notification.addClass('translate-y-16').removeClass('notification-show');
+                setTimeout(() => {
+                    notification.addClass('hidden');
+                }, 300);
+            }, 5000);
         }
-      });
-      // Cek NPK saat input
-      const inNpk = document.getElementById('inNpk');
-      inNpk.addEventListener('blur', cekNpkSaatInput);
-      inNpk.addEventListener('input', ()=>{
-        clearTimeout(npkCheckTimer);
-        npkCheckTimer = setTimeout(cekNpkSaatInput, 500);
-      });
-      // Datepicker di modal status
-      $("#statusTanggal").datepicker({
-        dateFormat:"dd/mm/yy",
-        changeMonth:true,
-        changeYear:true,
-        yearRange:"2020:2030",
-        showOn: "button",
-        buttonText: ""
-      });
-    });
-    AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:50});
-  </script>
+        
+        // Main navigation functions
+        function goBack() {
+            // Fungsi untuk kembali ke halaman sebelumnya
+            window.history.back();
+        }
+        
+        // Navigation functions
+        function navigateTo(formId) {
+            document.getElementById("seragamApplication").style.display = "none";
+            document.getElementById("formContainer").style.display = "block";
+            
+            const sections = ["box-search", "box-seragam", "box-po", "box-surat"];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('section-hidden');
+                }
+            });
+            
+            const targetElement = document.getElementById(formId);
+            if (targetElement) {
+                targetElement.classList.remove('section-hidden');
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Refresh AOS setelah navigasi
+            AOS.refresh();
+        }
+        
+        function backToSeragamApplication() {
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("seragamApplication").style.display = "block";
+            
+            // Scroll to menu section
+            document.getElementById("menuSection").scrollIntoView({ behavior: 'smooth' });
+            AOS.refresh();
+        }
+        
+        // Form submission handlers
+        document.getElementById('form-seragam').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const notif = document.getElementById('notif-seragam');
+            const formData = new FormData(e.target);
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            try {
+                await fetch(scriptURL, { method: "POST", body: formData });
+                notif.textContent = "✅ Data Seragam berhasil dikirim!";
+                notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-green-100 text-green-700";
+                e.target.reset();
+                showNotification("Data Seragam berhasil dikirim!");
+                toast("Data Seragam berhasil dikirim!");
+            } catch (err) {
+                notif.textContent = "❌ Gagal mengirim data.";
+                notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-red-100 text-red-700";
+                showNotification("Gagal mengirim data: " + err.message, false);
+                toast("Gagal mengirim data: " + err.message, false);
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('form-po').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const notif = document.getElementById('notif-po');
+            const formData = new FormData(e.target);
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            try {
+                await fetch(scriptURL, { method: "POST", body: formData });
+                notif.textContent = "✅ Data PO_Seragam berhasil dikirim!";
+                notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-green-100 text-green-700";
+                e.target.reset();
+                showNotification("Data PO_Seragam berhasil dikirim!");
+                toast("Data PO_Seragam berhasil dikirim!");
+            } catch (err) {
+                notif.textContent = "❌ Gagal mengirim data.";
+                notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-red-100 text-red-700";
+                showNotification("Gagal mengirim data: " + err.message, false);
+                toast("Gagal mengirim data: " + err.message, false);
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('form-search').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const notif = document.getElementById('notif-search');
+            const resultsContainer = document.getElementById('search-results');
+            const formData = new FormData(e.target);
+            
+            notif.textContent = "🔍 Mencari data...";
+            notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-blue-100 text-blue-700";
+            resultsContainer.innerHTML = "";
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+            
+            try {
+                const response = await fetch(scriptURL, { method: "POST", body: formData });
+                const result = await response.json();
+                
+                if (result.status === "success") {
+                    notif.textContent = `✅ Ditemukan ${result.count} data`;
+                    notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-green-100 text-green-700";
+                    
+                    result.data.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "bg-gray-50 p-5 rounded-xl border border-gray-200 shadow-sm";
+                        div.innerHTML =
+                            `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div><strong class="text-gray-700">No:</strong> <span class="text-gray-900">${item.no || "-"}</span></div>
+                                <div><strong class="text-gray-700">Tanggal:</strong> <span class="text-gray-900">${item.tanggal || "-"}</span></div>
+                                <div><strong class="text-gray-700">No. Invoice:</strong> <span class="text-gray-900">${item.no_inv || "-"}</span></div>
+                                <div><strong class="text-gray-700">No. PO:</strong> <span class="text-gray-900">${item.no_po || "-"}</span></div>
+                                <div><strong class="text-gray-700">Nominal:</strong> <span class="text-gray-900">${item.nominal ? Number(item.nominal).toLocaleString() : "-"}</span></div>
+                                <div><strong class="text-gray-700">DPP:</strong> <span class="text-gray-900">${item.dpp ? Number(item.dpp).toLocaleString() : "-"}</span></div>
+                                <div><strong class="text-gray-700">DPP9:</strong> <span class="text-gray-900">${item.dpp9 ? Number(item.dpp9).toLocaleString() : "-"}</span></div>
+                                <div><strong class="text-gray-700">User:</strong> <span class="text-gray-900">${item.user || "-"}</span></div>
+                            </div>`;
+                        resultsContainer.appendChild(div);
+                    });
+                } else {
+                    notif.textContent = result.message || "❌ Tidak ditemukan.";
+                    notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-red-100 text-red-700";
+                    toast("Data tidak ditemukan", false);
+                }
+            } catch (err) {
+                notif.textContent = "❌ Gagal melakukan pencarian.";
+                notif.className = "text-center font-bold mb-6 p-3 rounded-lg bg-red-100 text-red-700";
+                showNotification("Gagal melakukan pencarian: " + err.message, false);
+                toast("Gagal melakukan pencarian: " + err.message, false);
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').classList.add('hidden');
+            }
+        });
+        
+        function buatInputBarang() {
+            const jumlah = document.querySelector('input[name="jumlahBarang"]').value;
+            const container = document.getElementById('barangInputs');
+            container.innerHTML = "";
+            
+            for (let i = 1; i <= jumlah; i++) {
+                container.innerHTML +=
+                    `<div class="bg-gold-50 p-5 rounded-xl border border-gold-200">
+                        <h3 class="font-bold text-gold-700 mb-3 flex items-center">
+                            <i class="fas fa-box mr-2"></i> Barang ${i}
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Barang ${i}</label>
+                                <input type="text" name="barang${i}" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent form-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Qty ${i}</label>
+                                <input type="number" name="qty${i}" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent form-input">
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Satuan ${i}</label>
+                            <select name="satuan${i}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-koperasi-secondary focus:border-transparent form-input">
+                                <option value="pcs">pcs</option>
+                                <option value="stel">stel</option>
+                                <option value="psg">psg</option>
+                            </select>
+                        </div>
+                    </div>`;
+            }
+        }
+        
+        function openPrintWindow(suratData) {
+            const printWindow = window.open('', '_blank');
+            const printDocument = printWindow.document;
+            
+            printDocument.write(
+                `<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Surat Jalan</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                        }
+                        .container {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                        }
+                        .header {
+                            font-weight: bold;
+                        }
+                        .header-koperasi {
+                            font-weight: bold;
+                        }
+                        .alamat {
+                            font-style: italic;
+                        }
+                        .center {
+                            text-align: center;
+                        }
+                        .right {
+                            text-align: right;
+                        }
+                        .signature {
+                            text-align: center;
+                            margin-top: 20px;
+                        }
+                        .section-gap {
+                            margin-bottom: 10px;
+                        }
+                        .item-gap {
+                            margin-top: 10px;
+                        }
+                        .koperasi, .surat-jalan {
+                            width: 48%;
+                            padding: 10px;
+                        }
+                        .surat-jalan {
+                            border: 1px solid black;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        .signature-block td {
+                            height: 100px;
+                            vertical-align: bottom;
+                            text-align: center;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container section-gap">
+                        <div class="koperasi">
+                            <div class="header-koperasi">Koperasi Sigap Nusantara</div>
+                            <div>Jl. A. Yani No. 66, RW. 3, Cemp. Putih Timur</div>
+                            <div>Kota Jakarta Pusat - 10510</div>
+                            <div>(021) 21242525<br>NPWP: 02.250.480.7-408.000</div>
+                        </div>
+                        <div class="surat-jalan">
+                            <p class="header center">Surat Jalan</p>
+                            <p style="display: flex; justify-content: space-between; margin: 5px 0;">
+                                <span style="width: 70px;">Nomor</span>
+                                <span>:</span>
+                                <span style="flex: 1; margin-left: 10px;">${suratData.nomor}/SRT/SPA/VII/2025</span>
+                            </p>
+                            <p style="display: flex; justify-content: space-between; margin: 5px 0;">
+                                <span style="width: 70px;">Tanggal</span>
+                                <span>:</span>
+                                <span style="flex: 1; margin-left: 10px;">${suratData.tanggal}</span>
+                            </p>
+                            <p style="display: flex; justify-content: space-between; margin: 5px 0;">
+                                <span style="width: 70px;">User</span>
+                                <span>:</span>
+                                <span style="flex: 1; margin-left: 10px;">${suratData.user}</span>
+                            </p>
+                            <p style="display: flex; justify-content: space-between; margin: 5px 0;">
+                                <span style="width: 70px;">No PO</span>
+                                <span>:</span>
+                                <span style="flex: 1; margin-left: 10px;">${suratData.no_po || ''}</span>
+                            </p>
+                            <p style="display: flex; justify-content: space-between; margin: 5px 0;">
+                                <span style="width: 70px;">Penerima</span>
+                                <span>:</span>
+                                <span style="flex: 1; margin-left: 10px;"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <table style="width: 30%; border-collapse: collapse; border: 1px solid black; margin-top: 20px;">
+                        <tr>
+                            <td colspan="4" class="alamat center" style="border: 1px solid black; padding: 5px;">Alamat Pengiriman</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="font-weight: bold; border: 1px solid black; padding: 5px;">PT. Sigap Prima Astrea</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="border: 1px solid black; padding: 5px;">Jl. A. Yani No. 66, RW. 3,<br>Cemp. Putih Tim., Kec. Cemp. Putih,</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="border: 1px solid black; padding: 5px;">Kota Jakarta Pusat - 10510</td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: 20px;">
+                        <tr>
+                            <td colspan="5" style="border: 1px solid black; padding: 5px;">Harap dikirimkan barang-barang berikut ini:</td>
+                        </tr>
+                        <tr>
+                            <th style="border: 1px solid black; padding: 5px; background-color: #f2f2f2;">No.</th>
+                            <th colspan="2" style="border: 1px solid black; padding: 5px; background-color: #f2f2f2;">Nama Barang</th>
+                            <th style="border: 1px solid black; padding: 5px; background-color: #f2f2f2;">Qty</th>
+                            <th style="border: 1px solid black; padding: 5px; background-color: #f2f2f2;">Satuan</th>
+                        </tr>
+                        ${suratData.rows}
+                        <tr>
+                            <td colspan="2" style="border: 1px solid black; padding: 5px; text-align: center; font-weight: bold;">
+                                Disiapkan oleh</td>
+                            <td style="border: 1px solid black; padding: 5px; text-align: center; font-weight: bold;">Disetujui oleh
+                            </td>
+                            <td></td>
+                            <td style="border: 1px solid black; padding: 5px; text-align: center; font-weight: bold;">Dikonfirmasi oleh
+                            </td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td colspan="2" class="signature" style="border: 1px solid black; padding: 5px; text-align: center;">
+                                <br><br><br><br><br>Steven Jefferson<br><span style="font-size: smaller;">Staff Koperasi</span>
+                            </td>
+                            <td class="signature" style="border: 1px solid black; padding: 5px; text-align: center;">
+                                <br><br><br><br><br>Agus Sofyan Effendi<br><span style="font-size: smaller;">Manager Koperasi</span>
+                            </td>
+                            <td></td>
+                            <td class="signature" style="border: 1px solid black; padding: 5px; text-align: center;">
+                                <br><br><br><br><br>Customer
+                            </td>
+                        </tr>
+                    </table>
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.print();
+                            }, 500);
+                        }
+                    <\/script>
+                </body>
+                </html>`
+            );
+            printDocument.close();
+        }
+        
+        function printSurat() {
+            const form = document.querySelector('#box-surat form');
+            if (!form) {
+                alert("Form Surat Jalan tidak ditemukan!");
+                return;
+            }
+            
+            const nomor = form.nomor.value;
+            const tanggalInput = form.tanggal.value;
+            const user = form.user.value;
+            let noPoInput = form.querySelector('input[name="no_po"]');
+            if (!noPoInput) {
+                noPoInput = document.createElement('input');
+                noPoInput.type = 'hidden';
+                noPoInput.name = 'no_po';
+                form.appendChild(noPoInput);
+            }
+            const no_po = noPoInput.value;
+            const jumlah = parseInt(form.jumlahBarang.value);
+            
+            if (!nomor || !tanggalInput || !user || isNaN(jumlah) || jumlah <= 0) {
+                alert("Harap isi semua field yang diperlukan dan buat form barang terlebih dahulu.");
+                return;
+            }
+            
+            let tanggalFormatted = "";
+            if (tanggalInput) {
+                const tanggalObj = new Date(tanggalInput);
+                tanggalFormatted = tanggalObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+            
+            let rows = "";
+            for (let i = 1; i <= jumlah; i++) {
+                const namaInput = form[`barang${i}`];
+                const qtyInput = form[`qty${i}`];
+                const satuanInput = form[`satuan${i}`];
+                
+                if (namaInput && qtyInput && satuanInput) {
+                    const nama = namaInput.value;
+                    const qty = qtyInput.value;
+                    const satuan = satuanInput.value;
+                    rows += `<tr>
+                                <td style="border: 1px solid black; padding: 5px;">${i}</td>
+                                <td colspan="2" style="border: 1px solid black; padding: 5px;">${nama}</td>
+                                <td style="border: 1px solid black; padding: 5px;">${qty}</td>
+                                <td style="border: 1px solid black; padding: 5px;">${satuan}</td>
+                            </tr>`;
+                } else {
+                    console.warn(`Input barang ${i} tidak ditemukan atau tidak lengkap.`);
+                }
+            }
+            
+            const suratData = {
+                nomor: nomor,
+                tanggal: tanggalFormatted,
+                user: user,
+                no_po: no_po,
+                rows: rows
+            };
+            
+            openPrintWindow(suratData);
+        }
+        
+        document.getElementById("suratForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const nomor = form.nomor.value;
+            const tanggal = form.tanggal.value;
+            const user = form.user.value;
+            let noPoInput = form.querySelector('input[name="no_po"]');
+            if (!noPoInput) {
+                noPoInput = document.createElement('input');
+                noPoInput.type = 'hidden';
+                noPoInput.name = 'no_po';
+                form.appendChild(noPoInput);
+            }
+            const no_po = noPoInput.value;
+            const jumlah = parseInt(form.jumlahBarang.value);
+            
+            let rows = "";
+            for (let i = 1; i <= jumlah; i++) {
+                const nama = form[`barang${i}`].value;
+                const qty = form[`qty${i}`].value;
+                const satuan = form[`satuan${i}`].value;
+                rows += `<tr><td class="border border-gray-400 p-2">${i}</td><td class="border border-gray-400 p-2">${nama}</td><td class="border border-gray-400 p-2">${qty}</td><td class="border border-gray-400 p-2">${satuan}</td></tr>`;
+            }
+            
+            document.getElementById("output").innerHTML =
+                `<div class="bg-white p-6 rounded-xl shadow-lg">
+                    <table class="w-full border-collapse border border-gray-400">
+                        <tr>
+                            <td colspan="2" class="border border-gray-400 p-4 align-top">
+                                <strong class="text-lg text-koperasi-secondary">Koperasi Sigap Nusantara</strong><br>
+                                <div class="mt-2 text-gray-700">
+                                    Jl. A. Yani No.66, RW.3, Cemp. Putih Timur<br>
+                                    Kota Jakarta Pusat - 10510<br>
+                                    (021) 2124525<br>
+                                    NPWP: 02.250.480.7-408.000
+                                </div>
+                            </td>
+                            <td colspan="2" class="border border-gray-400 p-4 text-right align-top">
+                                <strong class="text-lg text-koperasi-secondary">Surat Jalan</strong><br><br>
+                                <div class="text-gray-700">
+                                    Nomor: ${nomor}<br>
+                                    Tanggal: ${tanggal}<br>
+                                    User: ${user}<br>
+                                    No PO: ${no_po || '-'}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="border border-gray-400 p-4 bg-gold-50">
+                                <strong class="text-koperasi-secondary">Alamat Pengiriman</strong><br>
+                                <div class="mt-2 text-gray-700">
+                                    PT. Sigap Prima Astrea<br>
+                                    Jl. A. Yani No.66, RW.3, Cemp. Putih Tim., Kec. Cemp. Putih,<br>
+                                    Kota Jakarta Pusat - 10510
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="border border-gray-400 p-4">
+                                Harap dikirimkan barang-barang berikut ini:
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="border border-gray-400 p-2 bg-gray-100">No.</th>
+                            <th class="border border-gray-400 p-2 bg-gray-100">Nama Barang</th>
+                            <th class="border border-gray-400 p-2 bg-gray-100">Qty</th>
+                            <th class="border border-gray-400 p-2 bg-gray-100">Satuan</th>
+                        </tr>
+                        ${rows}
+                        <tr class="signature-block">
+                            <td class="border border-gray-400 p-4 h-32 align-bottom text-center">
+                                <div class="text-gray-700">Disiapkan oleh</div><br><br>
+                                <strong class="text-koperasi-secondary">Steven Jefferson</strong><br>
+                                <span class="text-sm text-gray-600">Staff Koperasi</span>
+                            </td>
+                            <td class="border border-gray-400 p-4 h-32 align-bottom text-center">
+                                <div class="text-gray-700">Disetujui oleh</div><br><br>
+                                <strong class="text-koperasi-secondary">Agus Sofyan Effendi</strong><br>
+                                <span class="text-sm text-gray-600">Manager Koperasi</span>
+                            </td>
+                            <td colspan="2" class="border border-gray-400 p-4 h-32 align-bottom text-center">
+                                <div class="text-gray-700">Dikonfirmasi oleh</div><br><br>
+                                <strong class="text-gray-700">________________________</strong><br>
+                                <span class="text-sm text-gray-600">Customer</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>`;
+            
+            document.getElementById("outputSection").classList.remove('section-hidden');
+            document.getElementById("printButton").classList.remove('hidden');
+            document.getElementById("outputSection").scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
