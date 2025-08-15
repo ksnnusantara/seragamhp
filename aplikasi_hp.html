@@ -275,8 +275,8 @@
   </div>
 
   <script>
-    // ===== ENDPOINT (mengikuti file terakhir yang kamu kirim) =====
-    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzbRw2l1r79pS8bB2SpptGYWQyszaKFwoqMB1H-Q52yxfOjMTycG5P-BM9nR2W0xVPU/exec';
+    // ===== ENDPOINT (DISAMAKAN DENGAN LINK WEB-APP TERBARU) =====
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbxHylq0kuwja-7FQgHwYas-bh9GUUKChEPZ6stylR37gBWtqyFDKe7OsZCov2aoUmPi/exec';
 
     // ===== Toast & Spinner =====
     const toast = (msg, ok=true) => {
@@ -619,6 +619,7 @@
           </td>`;
         document.getElementById('tbody').appendChild(tr);
 
+        // Datepicker untuk kolom tanggal (read-only di backend update)
         $(`#${tanggalId}`).datepicker({
           dateFormat:"dd/mm/yy",
           changeMonth:true,
@@ -628,20 +629,22 @@
           buttonText: ""
         });
 
+        // Isi & aktifkan Select2 tipe HP
         const $tipe=$(`#${tipeId}`);
         $tipe.html(tipeHpOptions.map(v=>`<option ${v===esc(r.tipehp)?"selected":""}>${v}</option>`).join(''));
         $tipe.select2({tags:true,width:'100%',placeholder:"Pilih / ketik",createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
 
+        // Isi status
         const selStatus=document.getElementById(statusId);
         selStatus.innerHTML = statusList.map(s=>`<option ${s===esc(r.status)?"selected":""}>${s}</option>`).join('');
 
+        // Tombol Update → hanya kirim field yang diizinkan backend
         tr.querySelector('.btnUpdate').addEventListener('click', async ()=>{
           showSpinner();
           const payload = {
             action:'updateData',
-            id:r.id,
-            npk:r.npk,
-            tanggal: document.getElementById(tanggalId).value, // DD/MM/YYYY
+            id: r.id,                    // update per-baris (tepat sasaran)
+            npk: r.npk,                  // kirim juga npk (aman)
             cicilan: tr.querySelector('.cicilanSel').value,
             tipehp: $tipe.val(),
             alamat: tr.querySelector('.alamatSel').value,
@@ -677,6 +680,7 @@
 
     // ===== Init =====
     $(document).ready(function(){
+      // Datepicker input form
       $("#inTanggal").datepicker({
         dateFormat:"dd/mm/yy",
         changeMonth:true,
@@ -687,13 +691,16 @@
       });
       $("#inTanggal").val(fmtDDMMYYYY(new Date()));
 
+      // Select tipe HP di form input
       $('#inTipehp').html(tipeHpOptions.map(v=>`<option>${v}</option>`).join(''));
       $('#inTipehp').select2({placeholder:"Pilih / ketik tipe HP",tags:true,width:'100%',createTag:(p)=>({id:p.term,text:p.term,newOption:true})});
 
+      // Event form
       document.getElementById('formInput').addEventListener('submit', handleFormSubmit);
       document.getElementById('formCari').addEventListener('submit', handleSearchSubmit);
       document.getElementById('btnReset').addEventListener('click', handleSearchReset);
 
+      // Checkbox override active loan
       document.getElementById('ignoreActiveLoan').addEventListener('change', function() {
         if (this.checked) {
           document.getElementById('btnSimpan').disabled = false;
@@ -704,6 +711,7 @@
         }
       });
 
+      // Cek NPK saat input
       const inNpk = document.getElementById('inNpk');
       inNpk.addEventListener('blur', cekNpkSaatInput);
       inNpk.addEventListener('input', ()=>{
@@ -711,6 +719,7 @@
         npkCheckTimer = setTimeout(cekNpkSaatInput, 500);
       });
 
+      // Datepicker di modal status
       $("#statusTanggal").datepicker({
         dateFormat:"dd/mm/yy",
         changeMonth:true,
